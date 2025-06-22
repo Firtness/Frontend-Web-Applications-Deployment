@@ -49,7 +49,7 @@ export class RegisterComponent {
       next: (user) => {
         alert('Registrado con éxito');
         this.form.reset({ role: 'student' });
-        this.router.navigate(['/login']);
+        this.switchToLogin()
       },
       error: (err) => {
         console.log(err);

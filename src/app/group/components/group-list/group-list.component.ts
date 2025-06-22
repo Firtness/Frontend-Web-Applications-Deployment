@@ -69,7 +69,7 @@ export class GroupListComponent implements OnInit{
 
   ngOnInit(): void {
     if (!this.authService.isUserLoggedIn()) {
-      this.router.navigate(['login']);
+      this.router.navigate(['auth']);
     }
 
 
@@ -108,6 +108,7 @@ export class GroupListComponent implements OnInit{
       next: (group) => {
         this.getActualUser();
         this.getAvailableGroups();
+        this.joinCodeString = ''
       },
       error: (err) =>
       {
