@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, of, catchError } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import {Submission} from "../../challenges/model/submission.entity";
 
 @Injectable({
     providedIn: 'root'
@@ -33,5 +34,17 @@ export class AnalyticsService {
             })),
             catchError(() => of({firstName: 'Estudiante', lastName: ''}))
         );
+    }
+
+    getStudentSubmissionByChallenge(studentId: number, challengeId: number): Observable<Submission[]> {
+        return this.http.get<Submission[]>(`${this.apiUrl}/submissions/students/${studentId}/challenges/${challengeId}`);
+    }
+
+    getSubmissionsByStudentId(studentId: number): Observable<Submission[]> {
+        return this.http.get<Submission[]>(`${this.apiUrl}/submissions/student/${studentId}`);
+    }
+
+    getSubmissionsByStudentIdAndGroupId(studentId: number, groupId: number): Observable<Submission[]> {
+        return this.http.get<Submission[]>(`${this.apiUrl}/submissions/student/${studentId}/group/${groupId}`);
     }
 }

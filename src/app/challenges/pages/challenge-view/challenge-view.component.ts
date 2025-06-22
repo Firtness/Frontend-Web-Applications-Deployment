@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {ChallengeListComponent} from "../../components/challenge-list/challenge-list.component";
 import {MatButton} from "@angular/material/button";
 import {
@@ -29,7 +29,6 @@ const MAX_ATTEMPTS = 3;
     MatCard,
     MatCardActions,
     MatCardContent,
-    MatCardHeader,
     MatCardSubtitle,
     MatCardTitle,
     RouterLink,
@@ -45,6 +44,10 @@ const MAX_ATTEMPTS = 3;
   styleUrl: './challenge-view.component.css'
 })
 export class ChallengeViewComponent implements OnInit {
+
+  @ViewChild(SubmissionCardListComponent)
+  submissionListComponent!: SubmissionCardListComponent;
+
   challengeToSubmit: Submission = new Submission({});
   challenge:Challenge =new Challenge({})  ;
   isLoading = true;
@@ -113,13 +116,24 @@ export class ChallengeViewComponent implements OnInit {
       next: (response) => {
         console.log('Submission creada exitosamente:', response);
         this.isSubmissionFormVisible = false;
+
+        // 🔄 Actualizar lista
+        if (this.submissionListComponent) {
+          this.submissionListComponent.getAvailableSubmissions();
+        }
+
+        // Limpiar el contenido para evitar duplicación
+        this.challengeToSubmit.content = '';
+
+        this.remainingAttempts--;
+        localStorage.setItem('remainingAttempts', this.remainingAttempts.toString());
+
       },
       error: (err) => {
         console.error('Error al crear la submission:', err);
       }
     });
-    this.remainingAttempts--;
-    localStorage.setItem('remainingAttempts', this.remainingAttempts.toString());
+
   }
 
   toggleSubmissionForm(): void {
@@ -130,4 +144,6 @@ export class ChallengeViewComponent implements OnInit {
     this.remainingAttempts = MAX_ATTEMPTS;
     localStorage.setItem('remainingAttempts', this.remainingAttempts.toString());
   }
+
+
 }

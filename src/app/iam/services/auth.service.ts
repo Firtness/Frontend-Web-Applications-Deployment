@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError, switchMap, map } from 'rxjs';
+import {Observable, throwError, switchMap, map, lastValueFrom} from 'rxjs';
 import {User} from "../model/user.entity";
 import {BaseService} from "../../shared/services/base.service";
 import {environment} from "../../../environments/environment";
@@ -19,24 +19,36 @@ export class AuthService extends BaseService<User> {
       this.resourceEndpoint= usersResourceEndpoint;
   }
 
+
   login(email: string, password: string): Observable<User> {
-    return this.http.get<User[]>(`${this.resourcePath()}?email=${email}&password=${password}`).pipe(
-        map(users => {
-          if (users.length !== 1) throw new Error('Credenciales inválidas');
-          localStorage.setItem('auth_token', 'fake-token');
-          localStorage.setItem('auth_user', JSON.stringify(users[0]));
-          return users[0];
-        })
-    );
+    return this.http.get<User>(`${this.resourcePath()}/email/${email}/password/${password}`)
+
+  }
+
+
+
+  updateUser(): void {
+
+      if (this.isUserLoggedIn()) {
+          this.http.get<User>(`${this.resourcePath()}/${this.getUser()?.id}`).subscribe(
+              {
+                  next: (user) => {
+                      this.setUser(user);
+                  },
+                  error: (err) => {
+                      throw new Error(err.message);
+                  }
+              }
+          )
+      }
+
   }
 
   register(user: User): Observable<User> {
       if(!user.profilesInGroups){
           user.profilesInGroups = [];
       }
-    return this.http.get<User[]>(`${this.resourcePath()}?email=${user.email}`).pipe(
-        switchMap(res => res.length ? throwError(() => new Error('Ya registrado')) : this.http.post<User>(this.resourcePath(), user))
-    );
+    return this.http.post<User>(`${this.resourcePath()}`, JSON.stringify(user), this.httpOptions)
   }
 
   isAuthenticated(): boolean {
@@ -74,14 +86,7 @@ export class AuthService extends BaseService<User> {
   }
 
   getUsersByGroupId(groupId: number): Observable<User[]> {
-      return this.http.get<User[]>(this.resourcePath()).pipe(
-          map(users => {
-              return users.filter(user =>
-                  user.profilesInGroups &&
-                  user.profilesInGroups.some(profile => profile.groupId === groupId)
-              );
-          })
-      );
+      return this.http.get<User[]>(`${this.resourcePath()}/group/${groupId}`, this.httpOptions);
   }
 
   isUserLoggedIn(): boolean {
@@ -96,5 +101,20 @@ export class AuthService extends BaseService<User> {
 
       return groups.includes(groupId)
   }
+
+
+
+    leaveGroup(userId: number, groupId: number): Observable<void> {
+        const url = `${this.resourcePath()}/leave/${userId}/${groupId}`;
+        return this.http.delete<void>(url, this.httpOptions);
+    }
+
+    updateUserProfile(userId: number, userData: Partial<User>): Observable<User> {
+        return this.http.put<User>(`${this.resourcePath()}/${userId}`, userData, this.httpOptions);
+    }
+
+    findById(userId: number): Observable<User> {
+        return this.http.get<User>(`${this.resourcePath()}/${userId}`, this.httpOptions);
+    }
 
 }

@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {Group} from "../../model/group.entity";
+import { Component, Input, OnInit } from '@angular/core';
+import { Group } from "../../model/group.entity";
 import {
     MatCard, MatCardActions,
     MatCardContent,
@@ -8,12 +8,13 @@ import {
     MatCardSubtitle,
     MatCardTitle
 } from "@angular/material/card";
-import {MatButton} from "@angular/material/button";
-import {ProfileInGroup} from "../../../iam/model/profile-in-group.entity";
-import {RouterLink} from "@angular/router";
+import { MatButton, MatIconButton } from "@angular/material/button";
+import { ProfileInGroup } from "../../../iam/model/profile-in-group.entity";
+import { RouterLink } from "@angular/router";
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
-  selector: 'app-group-item',
+    selector: 'app-group-item',
     imports: [
         MatCard,
         MatCardHeader,
@@ -21,16 +22,28 @@ import {RouterLink} from "@angular/router";
         MatCardSubtitle,
         MatCardContent,
         MatCardFooter,
-        MatButton,
         RouterLink,
-        MatCardImage
+        MatCardImage,
+        MatIcon,
+        MatIconButton
     ],
-  templateUrl: './group-item.component.html',
-  standalone: true,
-  styleUrl: './group-item.component.css'
+    templateUrl: './group-item.component.html',
+    standalone: true,
+    styleUrl: './group-item.component.css'
 })
-export class GroupItemComponent {
-  @Input() group: Group = new Group({});
-  @Input() groupProfile: ProfileInGroup = new ProfileInGroup({});
+export class GroupItemComponent implements OnInit {
+    @Input() group: Group = new Group({});
+    @Input() groupProfile: ProfileInGroup = new ProfileInGroup({});
 
+    randomDuration: string = '';
+
+    ngOnInit(): void {
+        this.randomDuration = this.generateRandomDuration();
+    }
+
+    private generateRandomDuration(): string {
+        const hours = Math.floor(Math.random() * 4) + 1; // 1 to 4 hours
+        const minutes = Math.floor(Math.random() * 60);  // 0 to 59 minutes
+        return `${hours} hour${hours > 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+    }
 }

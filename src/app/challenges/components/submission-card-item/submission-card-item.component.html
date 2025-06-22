@@ -1,17 +1,24 @@
-<mat-card>
+<mat-card class="submission-card">
 
-    <img mat-card-image [src]="submission.imageUrl" alt="Challenge image">
+    <!-- Imagen principal -->
+    <div class="image-wrapper">
+        <img mat-card-image [src]="submission.imageUrl" alt="Challenge image" />
+    </div>
 
     <mat-card-content>
 
-        <mat-card-header>Submission ID: {{ submission.id }}</mat-card-header><br>
+        <mat-card-header class="custom-header">
+            Submission #{{ submission.id }}
+        </mat-card-header>
 
-        <span><strong>Student ID: </strong>{{ submission.studentId }}</span><br>
-        <span><strong>Content: </strong>{{ submission.content }}</span><br>
-        <span><strong>Score: </strong>{{ submission.score }}</span><br>
+        <span><strong>Student ID:</strong> {{ submission.studentId }}</span>
+        <span><strong>Content:</strong> {{ submission.content }}</span>
+        <span><strong>Score:</strong> {{ submission.score }}</span>
 
     </mat-card-content>
+
     <mat-card-footer>
-        <button *ngIf="currentUser.role === 'teacher'" mat-button (click)="editSubmission()">Set Score</button>
+        <button *ngIf="currentUser.role === 'ROLE_TEACHER'" mat-button (click)="editSubmission()">Set Score</button>
     </mat-card-footer>
+
 </mat-card>

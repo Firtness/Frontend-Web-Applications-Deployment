@@ -1,19 +1,131 @@
-.join-code-section{
+.join-code-section {
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(135deg, #ffffff, #f9f9f9);
+    padding: 24px 32px;
+    border-radius: 16px;
+    margin: 20px auto 30px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 800px;
+}
+
+/* Profesor: Crear grupo */
+.create-group-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.create-group-container h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    font-weight: 600;
+}
+
+.create-button mat-icon {
+    color: #f5a623;
+    font-size: 28px;
+    transition: transform 0.2s ease;
+}
+
+.create-button:hover mat-icon {
+    transform: scale(1.15);
+}
+
+/* Estudiante: Unirse a grupo */
+.join-code-section h3 {
+    font-size: 22px;
+    color: #333;
+    font-weight: 600;
 }
 
 .example-form-field {
-    width: 200px;
+    width: 220px;
+    margin-right: 12px;
 }
 
+.example-form-field input {
+    font-size: 14px;
+}
+
+/* Botón de unir grupo */
+.join-code-section button[mat-flat-button] {
+    background-color: #2196f3;
+    color: white;
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.join-code-section button[mat-flat-button]:hover {
+    background-color: #1976d2;
+    transform: translateY(-1px);
+}
+
+/* Título sección */
+h2.section-title {
+    text-align: center;
+    font-size: 1.8rem;
+    margin: 20px 0 10px;
+    color: #444;
+    font-weight: 600;
+}
+
+/* Cards de grupos */
 .group-cards {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap; /* Allows cards to wrap to next line if needed */
-    justify-content: center; /* Centers cards horizontally */
-    gap: 20px; /* Adds space between cards */
-    padding: 20px; /* Adds padding around the container */
-    width: 100%; /* Ensures container takes full width */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
+
+@media screen and (max-width: 768px) {
+    .join-code-section {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .example-form-field {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .join-code-section h3,
+    .create-group-container h3 {
+        font-size: 16px;
+    }
+
+    h2.section-title {
+        font-size: 1.4rem;
+    }
+}
+
+.join-group-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.join-code-section {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ffffff, #f9f9f9);
+    transition: background 0.4s ease, transform 0.3s ease;
+}
+
+.join-code-section:hover {
+    background: linear-gradient(135deg, #e6f0ff, #ffffff);
+    transform: scale(1.01);
+}
+
+
+

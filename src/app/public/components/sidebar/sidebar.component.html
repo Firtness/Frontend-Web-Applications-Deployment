@@ -1,27 +1,50 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport>
-    <h2>Navigation</h2>
-    @for (option of options; track option.label) {
-      <p><a mat-button [routerLink]="option.link" routerLinkActive="active">{{ option.label }}</a></p>
-    }
-      <p><a mat-button routerLink="/login" (click)="LogOut(); drawer.toggle()">Log Out</a></p>
-  </mat-sidenav>
-  <mat-sidenav-content>
-      <div class="mat-toolbar">
-          <mat-toolbar color="primary">
-              @if (IsUserConnected()) {
-                  <button (click)="drawer.toggle()"
-                          aria-label="Toggle Sidenav"
-                          mat-icon-button
-                          type="button">
-                      <mat-icon aria-label="Sidenav toggle icon">menu</mat-icon>
-                  </button>
-              }
-              <h1 style="padding-left: 60px">EduHive</h1>
-              <div class="spacer"></div>
-              <app-language-switcher></app-language-switcher>
-          </mat-toolbar>
-      </div>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
+    <mat-sidenav #drawer class="sidenav" mode="side" fixedInViewport>
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="bee.png" alt="EduHive Logo" class="logo" width="80" height="80" />
+            <h2 class="brand-title">EduHive</h2>
+        </div>
+
+        <!-- Opciones de navegación -->
+        <nav class="nav-links">
+            @for (option of options; track option.label) {
+                <a mat-button [routerLink]="option.link" routerLinkActive="active" (click)="drawer.toggle()">
+                    <mat-icon>house</mat-icon>
+                    {{ option.label }}
+                </a>
+            }
+            <a mat-button [routerLink]="'/profile'" routerLinkActive="active" (click)="drawer.toggle()">
+                <mat-icon>person</mat-icon>
+                Profile
+            </a>
+
+            <a mat-button class="logout" routerLink="/auth" (click)="LogOut(); drawer.toggle()">
+                <mat-icon>logout</mat-icon>
+                Log Out
+            </a>
+        </nav>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <!-- Toolbar -->
+        <mat-toolbar class="toolbar" color="primary">
+            @if (IsUserConnected()) {
+                <button mat-icon-button (click)="drawer.toggle()" class="menu-button" aria-label="Toggle sidenav">
+                    <mat-icon>menu</mat-icon>
+                </button>
+            }
+
+            <span class="toolbar-title">EduHive</span>
+            <span class="spacer"></span>
+
+            <!-- Language switcher -->
+            <app-language-switcher></app-language-switcher>
+        </mat-toolbar>
+
+        <!-- Contenido -->
+        <main>
+            <router-outlet></router-outlet>
+        </main>
+    </mat-sidenav-content>
 </mat-sidenav-container>

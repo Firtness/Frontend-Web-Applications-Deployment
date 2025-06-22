@@ -1,7 +1,7 @@
 <div class="code-section">
     <button mat-flat-button [routerLink]="['/group', groupId]" style="margin-left: 100px">Back to Group</button>
 
-    @if (user.role === 'teacher') {
+    @if (user.role === 'ROLE_TEACHER') {
         <div class="join-code-container">
             @if (groupJoinCode != '') {
                 <div class="code-display">
@@ -48,9 +48,9 @@
                 <td>{{teacher.lastName}}</td>
                 <td>{{teacher.email}}</td>
                 <td>
-                <span [class.student]="teacher.role === 'student'"
-                      [class.teacher]="teacher.role === 'teacher'">
-                  {{teacher.role === 'student' ? 'Estudiante' : 'Profesor'}}
+                <span [class.student]="teacher.role === 'ROLE_STUDENT'"
+                      [class.teacher]="teacher.role === 'ROLE_TEACHER'">
+                  {{teacher.role === 'ROLE_STUDENT' ? 'Estudiante' : 'Profesor'}}
                 </span>
                 </td>
             </tr>
@@ -68,7 +68,7 @@
         <th>Email</th>
         <th>Role</th>
         <th>Score</th>
-        @if (user.role == 'teacher') {
+        @if (user.role == 'ROLE_TEACHER') {
             <th>Actions</th>
         }
     </tr>
@@ -81,19 +81,23 @@
                 <td>{{student.lastName}}</td>
                 <td>{{student.email}}</td>
                 <td>
-                <span [class.student]="student.role === 'student'"
-                      [class.teacher]="student.role === 'teacher'">
-                  {{student.role === 'student' ? 'Estudiante' : 'Profesor'}}
+                <span [class.student]="student.role === 'ROLE_STUDENT'"
+                      [class.teacher]="student.role === 'ROLE_TEACHER'">
+                  {{student.role === 'ROLE_STUDENT' ? 'Estudiante' : 'Profesor'}}
                 </span>
                 </td>
                 <td>
                     {{getUserScore(student)}}
                 </td>
-                @if (user.role == 'teacher') {
+                @if (user.role == 'ROLE_TEACHER') {
                     <td>
                         <button mat-icon-button aria-label="kick" (click)="kickStudent(student.id)"><mat-icon>cancel</mat-icon></button>
                         <!-- Botón para los analytics -->
-                        <button mat-icon-button [routerLink]="['/group', groupId, 'student', student.id, 'analytics']" matTooltip="Analytics"><mat-icon>info</mat-icon></button>
+                        <button mat-icon-button
+                                [routerLink]="['/group', groupId, 'student', student.id, 'analytics']"
+                                matTooltip="Ver analytics del estudiante">
+                            <mat-icon>info</mat-icon>
+                        </button>
                     </td>
                 }
             </tr>

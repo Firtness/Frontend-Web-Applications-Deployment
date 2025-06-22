@@ -1,0 +1,68 @@
+.edit-profile-dialog {
+    background: linear-gradient(to bottom right, #fff8e1, #fceabb);
+    padding: 40px 24px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.dialog-title {
+    font-weight: bold;
+    font-size: 24px;
+    color: #5a4300;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+mat-form-field:hover {
+    transform: scale(1.015);
+    transition: transform 0.3s ease;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+
+button {
+    font-weight: bold;
+    border-radius: 12px;
+    padding: 10px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+button[type="submit"] {
+    background-color: #fbc02d;
+    color: #000;
+}
+
+button[type="submit"]:hover {
+    background-color: #f9a825;
+    transform: scale(1.05);
+}
+
+button[type="button"] {
+    background-color: #e0e0e0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

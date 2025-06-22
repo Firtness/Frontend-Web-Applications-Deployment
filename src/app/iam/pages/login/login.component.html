@@ -1,31 +1,23 @@
-<div class="form-container">
-    <h2>Sign In</h2>
-    <p (click)="navigateTo('/register')">Don’t have an account? Sign Up</p>
-    <div class="social-buttons">
-        <button class="social-button facebook" (click)="navigateTo('https://www.facebook.com')">
-            <i class="fab fa-facebook"></i>
-            <span>Facebook</span>
-        </button>
-        <button class="social-button twitter" (click)="navigateTo('https://www.twitter.com')">
-            <i class="fab fa-twitter"></i>
-            <span>Twitter</span>
-        </button>
-        <button class="social-button apple" (click)="navigateTo('https://www.apple.com')">
-            <i class="fab fa-apple"></i>
-            <span>Apple</span>
-        </button>
-
-    </div>
-
-    <span>OR</span>
-
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
-        <input formControlName="email" type="email" placeholder="Email" /><br>
-
-        <input formControlName="password" type="password" placeholder="Password" /><br>
-        <p (click)="navigateTo('https://outlook.office.com/mail/')">Forgot password?</p>
-        <button type="submit">Continue</button>
-    </form>
-
+<h2>Sign In</h2>
+<p (click)="switchToRegister()">Don’t have an account? Sign Up</p>
+<div class="social-buttons">
+    <button class="social-button facebook" (click)="navigateTo('https://www.facebook.com')">
+        <i class="fab fa-facebook"></i>
+        <span>Facebook</span>
+    </button>
+    <button class="social-button twitter" (click)="navigateTo('https://www.twitter.com')">
+        <i class="fab fa-twitter"></i>
+        <span>Twitter</span>
+    </button>
+    <button class="social-button apple" (click)="navigateTo('https://www.apple.com')">
+        <i class="fab fa-apple"></i>
+        <span>Apple</span>
+    </button>
 </div>
+<span>OR</span>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <input formControlName="email" type="email" placeholder="Email" /><br>
+    <input formControlName="password" type="password" placeholder="Password" /><br>
+    <p (click)="navigateTo('https://outlook.office.com/mail/')">Forgot password?</p>
+    <button type="submit">Continue</button>
+</form>

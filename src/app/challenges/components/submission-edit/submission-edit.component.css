@@ -1,70 +1,99 @@
-/* Estilo general del formulario */
 form {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px 24px;
+    background: linear-gradient(to right bottom, #fffde7, #fff3cd);
+    border-radius: 16px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    animation: fadeIn 0.5s ease;
 }
 
-/* Estilo para los campos del formulario */
 mat-form-field {
     width: 100%;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease-in-out;
 }
 
-mat-form-field.mat-form-field-appearance-fill {
-    background-color: #fff;
+mat-form-field:hover {
+    transform: scale(1.02);
+}
+
+/* Inputs y textarea */
+input[matInput],
+textarea[matInput] {
+    font-size: 15px;
+    padding: 12px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-mat-form-field.mat-form-field-appearance-fill:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Estilo para los inputs */
-input[matInput], textarea[matInput] {
-    font-size: 14px;
-    padding: 10px;
-    border-radius: 8px;
+    background-color: #fffef5;
     border: 1px solid #ddd;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-input[matInput]:focus, textarea[matInput]:focus {
+input[matInput]:focus,
+textarea[matInput]:focus {
+    border-color: #fec312;
+    box-shadow: 0 0 6px rgba(254, 195, 18, 0.6);
     outline: none;
-    border-color: #FEC312;
-    box-shadow: 0 0 4px rgb(254, 195, 18);
 }
 
-/* Estilo para los botones */
+/* Botones */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 10px;
+}
+
 button[mat-raised-button] {
-    background-color: #6200ee;
-    color: #fff;
+    background-color: #fec312;
+    color: #000;
     font-weight: bold;
     text-transform: uppercase;
-    padding: 10px 16px;
-    border-radius: 8px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(254, 195, 18, 0.4);
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button[mat-raised-button]:hover {
-    background-color: #3700b3;
+    background-color: #f9b400;
     transform: scale(1.05);
 }
 
 button[mat-button] {
-    color: #f44336;
+    color: #e53935;
     font-weight: bold;
-    text-transform: uppercase;
-    padding: 10px 16px;
-    border-radius: 8px;
+    padding: 12px 20px;
+    border-radius: 10px;
     transition: color 0.3s ease, transform 0.2s ease;
 }
 
 button[mat-button]:hover {
-    color: #d32f2f;
+    color: #c62828;
     transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    form {
+        padding: 20px 16px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

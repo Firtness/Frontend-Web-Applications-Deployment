@@ -33,7 +33,7 @@ export class ChallengeListComponent implements OnInit {
     this.currentUser= this.authService.getUser() || new User({});
   }
 
-  private getAvailableChallenges():void{
+  public getAvailableChallenges():void{
     this.challenges=[]
     this.challengeService.getByGroupId(this.currentGroupId).subscribe(
         {

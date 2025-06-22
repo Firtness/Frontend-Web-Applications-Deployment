@@ -34,23 +34,31 @@ export class SubmissionEditComponent implements OnInit {
       challengeId: [{ value: this.data.challengeId, disabled: true }],
       studentId: [{ value: this.data.studentId, disabled: true }],
       content: [{ value: this.data.content, disabled: true }],
-      score: [this.data.score, Validators.required]
+      score: [this.data.score, Validators.required],
+      imageUrl: [{ value: this.data.imageUrl, disabled: true }]
     });
   }
 
   onSubmit(): void {
     if (this.submissionForm.valid) {
       this.submissionToUpdate = { ...this.submissionForm.getRawValue() };
-      console.log(this.submissionToUpdate);
-      this.submissionService.updateSubmission(this.submissionToUpdate.id,this.submissionToUpdate).subscribe({
+
+      // 🔄 Asegúrate de pasar también la imageUrl si es necesaria
+      if (!this.submissionToUpdate.imageUrl) {
+        this.submissionToUpdate.imageUrl = this.data.imageUrl; // o asigna una default
+      }
+
+      this.submissionService.updateSubmission(this.submissionToUpdate.id, this.submissionToUpdate).subscribe({
         next: (response) => {
           console.log('Submission updated successfully', response);
+
+          // ⬇️ Cerramos el diálogo y notificamos que hubo cambios
+          this.dialogRef.close(true);
         },
         error: (error) => {
           console.error('Error updating submission', error);
         }
-      })
-      this.dialogRef.close(this.submissionForm.value);
+      });
     }
   }
 

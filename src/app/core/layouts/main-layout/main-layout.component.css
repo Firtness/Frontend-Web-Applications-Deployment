@@ -1,0 +1,35 @@
+.sidenav-container {
+    height: 100%;
+    width: 100%;
+}
+mat-sidenav-content {
+    /*height: 100%;*/
+    overflow-y: hidden;
+    /*background: var(--c-primary-soft);*/
+}
+.sidenav {
+    width: 15%;
+    background-color: #F4BE1D;
+}
+
+mat-toolbar {
+    background: var(--c-secondary-darkgrey) !important;
+    color: white;
+}
+
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.header {
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+.content {
+    padding-block: 2rem;
+}

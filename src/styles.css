@@ -1,6 +1,46 @@
+@import "assets/css/variables.css";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Reglas base */
+* {
+    box-sizing: border-box;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Fondo con imagen */
+body {
+    background-color: var(--c-primary-soft);
+}
+
+
+/* Estilos para secciones */
+section {
+    height: 100vh;
+    padding-inline: 5%;
+}
+
+
+/* PRIME NG */
+
+.mat-drawer-container {
+    /* background-color: var(--c-primary-soft) !important; */
+    background-color: transparent !important;
+
+
+}
+
+.mat-toolbar {
+    color: var(--c-text) !important;
+}
+
+.mat-card {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+.mat-card-content {
+    background-color: transparent !important;
+}

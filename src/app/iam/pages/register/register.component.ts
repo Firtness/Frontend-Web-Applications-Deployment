@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import {Router} from "@angular/router";
@@ -13,6 +13,9 @@ import {Router} from "@angular/router";
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
+
+  @Output() loginEvent = new EventEmitter<boolean>();
+
   form: FormGroup;
   error = '';
 
@@ -32,14 +35,31 @@ export class RegisterComponent {
       return;
     }
 
+    switch (this.form.value.role)
+    {
+      case 'student':
+        this.form.value.role = "ROLE_STUDENT"
+        break;
+      case 'teacher':
+        this.form.value.role = "ROLE_TEACHER"
+        break;
+    }
+
     this.auth.register(this.form.value).subscribe({
-      next: () => {
+      next: (user) => {
         alert('Registrado con éxito');
         this.form.reset({ role: 'student' });
         this.router.navigate(['/login']);
       },
-      error: err => this.error = err.message
+      error: (err) => {
+        console.log(err);
+        this.error = err.message
+      }
     });
 
+  }
+
+  switchToLogin() {
+    this.loginEvent.emit(true);
   }
 }

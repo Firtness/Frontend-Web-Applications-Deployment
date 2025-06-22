@@ -1,15 +1,20 @@
-<mat-card appearance="outlined">
-    <img mat-card-image [src]="group.imageUrl" alt="Challenge image">
+<mat-card class="course-card" appearance="outlined">
+    <img mat-card-image [src]="group.imageUrl" alt="Course image">
+    <div class="badge">Diseño UI/UX</div>
+
     <mat-card-header>
-        <mat-card-title>{{group.name}}</mat-card-title>
-        <mat-card-subtitle>{{group.description}}</mat-card-subtitle>
+        <mat-card-title>{{ group.name }}</mat-card-title>
+        <mat-card-subtitle>{{ group.description }}</mat-card-subtitle>
     </mat-card-header>
+
     <mat-card-content>
-        <p>Total Score: {{groupProfile.score}}</p>
+        <p>Total Score: {{ groupProfile.score }}</p>
+        <p><mat-icon>schedule</mat-icon> {{ randomDuration }}</p>
     </mat-card-content>
+
     <mat-card-footer>
-        <button mat-button
-                [routerLink]="['/group', group.id]">Ver
+        <button mat-icon-button [routerLink]="['/group', group.id]" class="view-button">
+            <mat-icon>arrow_forward</mat-icon>
         </button>
     </mat-card-footer>
 </mat-card>

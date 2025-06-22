@@ -1,0 +1,69 @@
+:host {
+    display: block;
+    padding: 24px;
+    background: linear-gradient(to right, #fffde7, #fdf6e3); /* fondo cálido */
+    border-radius: 16px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* Título adaptativo */
+h3 {
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 24px;
+    padding-left: 8px;
+    border-left: 6px solid #fec312;
+    animation: slideDown 0.4s ease;
+}
+
+/* Grid adaptativo */
+mat-grid-list {
+    width: 100%;
+}
+
+mat-grid-tile {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 12px;
+}
+
+mat-grid-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Fade-in y slide-in animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* RESPONSIVE GRID (Angular Material no lo hace automáticamente) */
+@media (min-width: 600px) {
+    mat-grid-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 960px) {
+    mat-grid-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

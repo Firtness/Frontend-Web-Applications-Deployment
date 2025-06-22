@@ -1,19 +1,25 @@
-<mat-card>
-    <!-- Imagen en la parte superior -->
-    <img mat-card-image [src]="challenge.imageUrl" alt="Challenge image">
-    <mat-card-content>
+<mat-card class="horizontal-card">
+    <div class="card-image-container">
+        <img mat-card-image [src]="challenge.imageUrl" alt="Challenge image">
+    </div>
 
+    <div class="card-content-container">
+        <mat-card-header>{{ challenge.title }}</mat-card-header>
 
-        <mat-card-header>Title : {{ challenge.title }}</mat-card-header><br>
+        <mat-card-content>
+            <span>{{ challenge.description }}</span>
 
-        <span><strong>description: </strong>{{ challenge.description }}</span><br>
-        <span><strong>deadline: </strong>{{ challenge.deadline }}</span><br>
+            <div class="deadline-block">
+                <strong>Deadline:</strong> {{ challenge.deadline }}
+            </div>
+        </mat-card-content>
 
-    </mat-card-content>
-    <mat-card-footer>
-        <button mat-button [routerLink]="['/group', groupId, 'challenge', challenge.id]" style="background-color: orange;">
-            <mat-icon style="color: white;">arrow_forward</mat-icon>
-        </button>
-
-    </mat-card-footer>
+        <mat-card-footer>
+            <button mat-flat-button color="primary"
+                    [routerLink]="['/group', groupId, 'challenge', challenge.id]"
+                    class="view-more-button">
+                View More
+            </button>
+        </mat-card-footer>
+    </div>
 </mat-card>

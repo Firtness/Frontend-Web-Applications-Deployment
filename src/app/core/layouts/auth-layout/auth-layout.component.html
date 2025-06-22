@@ -1,0 +1,10 @@
+<main>
+    <div class="form-container">
+        @if (isLogin)
+        {
+            <app-login (registerEvent)="handleSwitchEvent($event)"></app-login>
+        } @else {
+            <app-register (loginEvent)="handleSwitchEvent($event)"></app-register>
+        }
+    </div>
+</main>

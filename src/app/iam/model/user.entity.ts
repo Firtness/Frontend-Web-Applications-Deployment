@@ -1,6 +1,6 @@
 import {ProfileInGroup} from "./profile-in-group.entity";
 
-export type Role = 'student' | 'teacher';
+export type Role = 'ROLE_STUDENT' | 'ROLE_TEACHER';
 export class User {
     id: number;              // Solo para el backend
     email: string;             // Requerido y único
@@ -16,7 +16,7 @@ export class User {
         this.email = user.email || '';
         this.firstName = user.firstName || '';
         this.lastName = user.lastName || '';
-        this.role = user.role || 'student';
+        this.role = user.role || 'ROLE_STUDENT';
         this.password = user.password || '';
         this.profilesInGroups = user.profilesInGroups || [];
     }

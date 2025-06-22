@@ -1,18 +1,159 @@
 .sidenav-container {
-  height: 100%;
+  height: 100%; /* Mantiene la altura total de la pantalla */
   width: 100%;
 }
 
-.sidenav {
-  width: 10%;
-  background-color: #F4BE1D;
+mat-sidenav {
+  width: 250px;
+  min-height: 100vh;
+  background-color: #f4be1d;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
 }
 
-.sidenav .mat-toolbar {
-  background: inherit;
+mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: auto;
 }
 
+mat-toolbar {
+  background-color: #000000 !important; /* Color negro */
+  color: #ffffff !important;           /* Texto blanco */
+  min-height: 80px !important; /* Fuerza altura mínima */
+  height: 80px !important;     /* Asegura que se mantenga */  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra más marcada */
+  transition: all 0.3s ease-in-out;
+  z-index: 10;
+  position: absolute;
+}
+
+/* Cambios al pasar el mouse (dinamismo extra si aplicas hover a algún elemento) */
+mat-toolbar:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+/* Para elementos dentro de la toolbar */
+mat-toolbar h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  padding-left: 16px;
+  color: #fec312; /* Amarillo para contraste si lo deseas */
+}
+
+/* Botón del menú */
+mat-toolbar button[mat-icon-button] {
+  color: white;
+  margin-right: 30px;
+  transition: transform 0.2s ease;
+}
+
+mat-toolbar button[mat-icon-button]:hover {
+  transform: scale(1.1);
+}
+
+/* Espaciador */
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  mat-toolbar {
+    height: 70px;
+    padding: 0 16px;
+  }
+
+  mat-toolbar h1 {
+    font-size: 20px;
+  }
+}
+
+
+.router-outlet {
+  flex-grow: 1;
+  padding: 16px;
+}
+
+/* Logo */
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.logo {
+  object-fit: contain;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.brand-title {
+  font-size: 20px;
+  margin-top: 10px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Navegación */
+.nav-links a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: #333;
+  transition: background 0.2s ease;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.nav-links .logout {
+  color: #b71c1c;
+}
+
+/* Botón hamburguesa */
+.menu-button {
+  margin-right: 12px;
+}
+
+.toolbar-title {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
 
 .spacer {
   flex: 1 1 auto;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  mat-sidenav {
+    width: 100vw;
+    height: auto;
+  }
+
+  mat-toolbar.toolbar {
+    justify-content: space-between;
+  }
+
+  .logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .toolbar-title {
+    font-size: 18px;
+  }
 }

@@ -1,4 +1,13 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild
+} from '@angular/core';
+
 import {Group} from "../../model/group.entity";
 import {GroupService} from "../../services/group.service";
 import {GroupItemComponent} from "../group-item/group-item.component";
@@ -10,7 +19,6 @@ import {GroupJoinCode} from "../../model/group-join-code.entity";
 import {GroupJoinCodeService} from "../../services/group-join-code.service";
 import {AuthService} from "../../../iam/services/auth.service";
 import {ProfileInGroup} from "../../../iam/model/profile-in-group.entity";
-import {of} from "rxjs";
 import {User} from "../../../iam/model/user.entity";
 import {MatDialog} from "@angular/material/dialog";
 import {GroupCreateAndEditComponent} from "../group-create-and-edit/group-create-and-edit.component";
@@ -18,6 +26,7 @@ import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-group-list',
+  standalone: true,
   imports: [
     GroupItemComponent,
     MatFormField,
@@ -30,96 +39,83 @@ import {Router} from "@angular/router";
     MatHint
   ],
   templateUrl: './group-list.component.html',
-  standalone: true,
   styleUrl: './group-list.component.css'
 })
-export class GroupListComponent implements OnInit {
+export class GroupListComponent implements OnInit{
+
+  @ViewChild('reactiveBox') reactiveBox!: ElementRef;
+
+  loadingGroups: boolean = true;
 
   user: User = new User({});
   profilesInGroups: ProfileInGroup[] = [];
 
   joinCodeString: string = '';
-
   joinCode!: GroupJoinCode;
   joinFailed: boolean = false;
 
-  availableGroups:number[]= [];
+  availableGroups: number[] = [];
   groups: Group[] = [];
 
+  bees = Array.from({ length: 10 }, (_, i) => i); // 10 abejas con índice
+
   constructor(
-      private changeDetector: ChangeDetectorRef,
       private createDialog: MatDialog,
       private groupService: GroupService,
       private groupJoinCodeService: GroupJoinCodeService,
       private authService: AuthService,
       private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-
-    console.log('Is logged in:', this.authService.isUserLoggedIn());
-
     if (!this.authService.isUserLoggedIn()) {
       this.router.navigate(['login']);
     }
 
-    this.user = this.authService.getUser() || new User({});
 
-    this.getUserGroupList()
+    this.getActualUser();
+
     this.getAvailableGroups()
   }
 
-  private getUserGroupList(): void {
-    this.profilesInGroups = this.authService.getUser()?.profilesInGroups || new Array<ProfileInGroup>()
+  private getActualUser() {
+    this.authService.updateUser();
+    this.user = this.authService.getUser() || new User({});
 
-    for (let profile of this.profilesInGroups) {
-      this.availableGroups.push(profile.groupId);
-    }
   }
 
   private getAvailableGroups(): void {
-    this.groups = [];
-    this.availableGroups.map((groupId) => {
-      this.groupService.getById(groupId).subscribe({
-        next: group => {
-          this.groups.push(group);
-        },
-        error: err => {
-          console.error(`Error al obtener el grupo con ID ${groupId}:`, err);
-        }
-      });
-    });
+    this.groupService.getGroupsFromUser(this.user.id).subscribe(
+        {
+          next: (groups) => {
+            this.groups = groups;
+            this.loadingGroups = false
+          },
+          error: err => {
+            if (err.status === 404) {
+              this.groups = []
+              this.loadingGroups = false
+            }
+          }
+        })
   }
 
   submitCode(): void {
     this.joinCode = new GroupJoinCode({});
 
-    this.groupJoinCodeService.getByKey(this.joinCodeString).subscribe({
-      next: code => {
-        this.joinCode = code;
-        this.joinCodeString = '';
 
-        if (this.joinCode && !this.availableGroups.includes(this.joinCode.groupId)) {
-          if (this.user.profilesInGroups) {
-            this.user.profilesInGroups.push({ groupId: this.joinCode.groupId, score: 0 });
-          }
-          this.joinCode = new GroupJoinCode({});
-
-          this.authService.update(this.user.id, this.user).subscribe({
-            next: (user) => {
-              this.authService.setUser(user)
-              this.getUserGroupList()
-              this.getAvailableGroups()
-            }
-          })
-        } else {
-          this.joinFailed = true;
-        }
+    this.groupJoinCodeService.joinUserToGroupByKey(this.user.id, this.joinCodeString).subscribe({
+      next: (group) => {
+        this.getActualUser();
+        this.getAvailableGroups();
       },
-      error: err => {
-        console.error(`No existe el código: ${this.joinCodeString}:`, err);
+      error: (err) =>
+      {
+        this.joinFailed = true;
+        throw new Error(err.message)
+
       }
-    });
+    })
   }
 
   findGroupById(id: number): Group {
@@ -142,38 +138,26 @@ export class GroupListComponent implements OnInit {
     });
   }
 
-  private createGroup(groupData: {name: string, description: string}): void {
+  private createGroup(groupData: { name: string, description: string }): void {
     const newGroup = new Group({
       name: groupData.name,
       description: groupData.description,
     });
 
-    //Publicar al db.json
 
-    this.groupService.create(newGroup).subscribe({
-      next: (createdGroup) => {
-        // Añadir a la lista local
-        this.groups.push(createdGroup);
-        console.log('Grupos con agregado: ', this.groups)
-        this.availableGroups.push(createdGroup.id)
+    console.log("Group to create: ");
+    console.log(newGroup);
 
-        //Actualizar Profiles del usuario
-        if (this.user.profilesInGroups) {
-          this.user.profilesInGroups.push({ groupId: createdGroup.id, score: 0 });
-        }
+    this.groupService.createGroupAsTeacher(this.user.id, newGroup).subscribe({
+      next: (group) => {
+        console.log(group);
+        this.getActualUser();
+        this.getAvailableGroups();
 
-        // Actualizar Valores
-        this.authService.update(this.user.id, this.user).subscribe({
-          next: (user) => {
-            this.authService.setUser(user)
-            this.getUserGroupList()
-            this.getAvailableGroups()
-          }
-        })
       },
       error: (err) => {
-        console.error('Error creating group:', err);
+        throw new Error(err.message)
       }
-    });
+    })
   }
 }

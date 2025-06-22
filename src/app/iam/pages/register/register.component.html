@@ -1,4 +1,4 @@
-<div class="form-container">
+<div class="fadeIn">
     <h2>Sign Up</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
@@ -8,12 +8,14 @@
 
         <input formControlName="lastName" type="text" placeholder="Last Name" /><br>
 
-        <select formControlName="role">
+        <select formControlName="role" title="Role">
             <option value="student">Student</option>
             <option value="teacher">Teacher</option>
         </select> <br>
 
         <input formControlName="password" type="password" placeholder="Password" />
+
+        <p (click)="switchToLogin()">Already have an account? Log In</p>
         <button type="submit">Continue</button>
     </form>
 </div>

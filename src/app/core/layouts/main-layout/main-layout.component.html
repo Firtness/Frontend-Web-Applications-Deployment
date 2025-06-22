@@ -1,0 +1,43 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" mode="side" fixedInViewport>
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="bee.png" alt="EduHive Logo" class="logo" width="80" height="80" />
+            <h2 class="brand-title">EduHive</h2>
+        </div>
+
+        <!-- Opciones de navegación -->
+        <nav class="nav-links">
+            @for (option of options; track option.label) {
+                <a mat-button [routerLink]="option.link" routerLinkActive="active" (click)="drawer.toggle()">
+                    <mat-icon>chevron_right</mat-icon>
+                    {{ option.label }}
+                </a>
+            }
+            <a mat-button class="logout" routerLink="/login" (click)="LogOut(); drawer.toggle()">
+                <mat-icon>logout</mat-icon>
+                Log Out
+            </a>
+        </nav>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <!-- Toolbar -->
+        <mat-toolbar class="toolbar" color="primary">
+            @if (IsUserConnected()) {
+                <button mat-icon-button (click)="drawer.toggle()" class="menu-button" aria-label="Toggle sidenav">
+                    <mat-icon>menu</mat-icon>
+                </button>
+            }
+
+            <span class="toolbar-title">EduHive</span>
+            <span class="spacer"></span>
+
+            <!-- Language switcher -->
+            <app-language-switcher></app-language-switcher>
+        </mat-toolbar>
+
+        <!-- Contenido -->
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,126 @@
+.profile-card {
+    max-width: 900px;
+    margin: 70px auto;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+
+}
+
+.profile-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.profile-card section {
+    max-height: 600px;
+    display: flex;
+}
+
+.profile-image {
+    flex: 1 1 250px;
+    min-width: 250px;
+    max-width: 300px;
+    overflow: hidden;
+}
+
+.profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.profile-image img:hover {
+    transform: scale(1.05);
+}
+
+.profile-details {
+    flex: 2 1 400px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: center;
+}
+
+.profile-details h2 {
+    margin: 0;
+    font-size: 28px;
+    color: #333;
+}
+
+.role {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1976d2;
+    background-color: #e3f2fd;
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.email {
+    font-size: 15px;
+    color: #666;
+}
+
+.edit-button {
+    align-self: flex-start;
+    background-color: #fec312;
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    background-color: #e0b100;
+    transform: scale(1.05);
+}
+
+.stats {
+    margin-top: 16px;
+}
+
+.stats h3 {
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.stats ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.stats li {
+    margin-bottom: 6px;
+    font-size: 15px;
+    color: #555;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .profile-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .profile-details {
+        padding: 20px;
+        align-items: center;
+    }
+
+    .edit-button {
+        align-self: center;
+    }
+}

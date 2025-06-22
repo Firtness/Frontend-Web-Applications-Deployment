@@ -1,15 +1,12 @@
 export class GroupJoinCode {
-    id: number;
     key: string;
-    groupId: number;
+    expiration: Date;
 
     constructor(groupJoinCode: {
-        id?: number;
         key?: string,
-        groupId?: number
+        expiration?: Date;
     }) {
-        this.id = groupJoinCode.id || 0;
         this.key = groupJoinCode.key || '';
-        this.groupId = groupJoinCode.groupId || 0;
+        this.expiration = groupJoinCode.expiration || new Date();
     }
 }

@@ -1,23 +1,21 @@
-<h2 mat-dialog-title>Crear Nuevo Grupo</h2>
+<h2 mat-dialog-title class="dialog-title">🐝 Crear un Nuevo Grupo</h2>
 
-<mat-dialog-content>
-    <form (ngSubmit)="onSubmit()">
+<mat-dialog-content class="group-dialog">
+    <form (ngSubmit)="onSubmit()" #groupForm="ngForm" class="group-form">
+
         <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Nombre del Grupo</mat-label>
+            <mat-label>🐝 Nombre del Grupo</mat-label>
             <input matInput [(ngModel)]="groupData.name" name="name" required>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Descripción</mat-label>
-            <textarea matInput [(ngModel)]="groupData.description" name="description" required rows="3"></textarea>
+            <mat-label>📝 Descripción</mat-label>
+            <textarea matInput [(ngModel)]="groupData.description" name="description" rows="3" required></textarea>
         </mat-form-field>
+
+        <button mat-raised-button color="accent" class="submit-button" type="submit"
+                [disabled]="groupForm.invalid">
+            🐝 Crear Grupo
+        </button>
     </form>
 </mat-dialog-content>
-
-<mat-dialog-actions align="end">
-    <button mat-button (click)="onCancel()">Cancelar</button>
-    <button mat-raised-button color="primary" (click)="onSubmit()"
-            [disabled]="!groupData.name || !groupData.description">
-        Crear
-    </button>
-</mat-dialog-actions>
