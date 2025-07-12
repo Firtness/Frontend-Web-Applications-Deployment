@@ -1,24 +1,24 @@
 <h2 mat-dialog-title class="title-with-icon">
-    <mat-icon color="primary">add</mat-icon> Create Challenge
+    <mat-icon color="primary">add</mat-icon> {{ 'createChallenge' | translate }}
 </h2>
 
 <mat-dialog-content>
     <form (ngSubmit)="onSubmit()" class="dialog-form">
         <!-- Title -->
         <mat-form-field appearance="outline" class="full-width hover-effect">
-            <mat-label>Challenge Title</mat-label>
+            <mat-label>{{ 'challengeTitle' | translate }}</mat-label>
             <input matInput [(ngModel)]="challengeData.title" name="title" required>
         </mat-form-field>
 
         <!-- Description -->
         <mat-form-field appearance="outline" class="full-width hover-effect">
-            <mat-label>🌿 Challenge Description</mat-label>
+            <mat-label>🌿 {{ 'challengeDescription' | translate }}</mat-label>
             <textarea matInput [(ngModel)]="challengeData.description" name="description" required rows="3"></textarea>
         </mat-form-field>
 
         <!-- Deadline -->
         <mat-form-field appearance="outline" class="full-width hover-effect">
-            <mat-label>📅 Deadline</mat-label>
+            <mat-label>📅 {{ 'deadline' | translate }}</mat-label>
             <input matInput [matDatepicker]="picker" [(ngModel)]="challengeData.deadline" name="deadline" [min]="minDate" required>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
@@ -27,9 +27,9 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-stroked-button color="warn" (click)="onCancel()">Cancel</button>
+    <button mat-stroked-button color="warn" (click)="onCancel()">{{ 'cancel' | translate }}</button>
     <button mat-raised-button color="primary" (click)="onSubmit()"
             [disabled]="!challengeData.title || !challengeData.description || !challengeData.deadline">
-        🐝 Create
+        🐝 {{ 'create' | translate }}
     </button>
 </mat-dialog-actions>

@@ -14,6 +14,11 @@ import {catchError, firstValueFrom, of} from "rxjs";
 import {MatTooltip} from "@angular/material/tooltip";
 import {ChallengeApiService} from "../../../challenges/services/challenge-api.service";
 import {Challenge} from "../../../challenges/model/challenge.entity";
+import {MatSelect} from "@angular/material/select";
+import {MatOption} from "@angular/material/core";
+import {NgForOf, NgOptimizedImage} from "@angular/common";
+import {SubmissionApiService} from "../../../challenges/services/submission-api.service";
+import {Submission} from "../../../challenges/model/submission.entity";
 
 @Component({
   selector: 'app-group-members-view',
@@ -26,7 +31,10 @@ import {Challenge} from "../../../challenges/model/challenge.entity";
     MatLabel,
     MatInput,
     FormsModule,
-    MatTooltip
+    MatTooltip,
+    MatSelect,
+    MatOption,
+    NgForOf
   ],
   templateUrl: './group-members-view.component.html',
   standalone: true,
@@ -38,7 +46,7 @@ export class GroupMembersViewComponent implements OnInit {
 
   teacher: User = new User({});
   
-  studentList: Array<User> = [];
+  studentList: User[] = [];
   groupId!: number;
 
   groupJoinCode: string = '';
@@ -47,13 +55,21 @@ export class GroupMembersViewComponent implements OnInit {
 
   challenges: Challenge[] = [];
 
+  selectedStudentId: number | null = null;
+
+  studentScores: {[key: number]: number} = {};
+
+  studentImg: string = 'https://randomuser.me/api/portraits/lego/1.jpg';
+
   constructor(
       private authService: AuthService,
       private route: ActivatedRoute,
       private groupJoinCodeService: GroupJoinCodeService,
       private snackBar: MatSnackBar,
       private router: Router,
-      private challengeService: ChallengeApiService
+      private challengeService: ChallengeApiService,
+      private submissionService: SubmissionApiService,
+      private groupService: GroupService,
   ) {
   }
 
@@ -76,15 +92,21 @@ export class GroupMembersViewComponent implements OnInit {
       }
     });
 
-    if (!this.authService.userIsInGroup(this.groupId) || !this.authService.isUserLoggedIn()) {
-      this.router.navigate(['no-access']);
-    }
+    // if (!this.authService.userIsInGroup(this.groupId) || !this.authService.isUserLoggedIn()) {
+    //   this.router.navigate(['no-access']);
+    // }
 
   }
 
   private loadData(): void {
     this.groupId = Number(this.route.snapshot.paramMap.get('groupId')) || 0; console.log(this.groupId);
     this.getUserListForGroup(this.groupId)
+  }
+
+  async loadStudentScores() {
+    for (const student of this.studentList) {
+      this.studentScores[student.id] = await this.getUserScore(student);
+    }
   }
 
   private loadGroupJoinCode(): void {
@@ -197,28 +219,46 @@ export class GroupMembersViewComponent implements OnInit {
     });
   }
 
-  private getUserListForGroup(groupId: number){
+  private getUserListForGroup(groupId: number) {
     this.authService.getUsersByGroupId(groupId).subscribe({
-      next: (users) => {
-        console.log(users);
-        users.map((user) => {
-          if ( user.role == "ROLE_TEACHER") {
-            this.teacher = user;
-          } else {
-            this.studentList.push(user);
-          }
-        })
-        console.log(this.studentList);
+      next: (users: User[]) => {
+        this.studentList = []; // Reset the array
+        this.teacher = new User({}); // Reset teacher
+
+        if (users && Array.isArray(users)) {
+          users.forEach((user) => {
+            if (user.roles?.[0] === "ROLE_TEACHER") {
+              this.teacher = user;
+            } else {
+              this.studentList.push(user);
+            }
+          });
+        }
+
+        this.loadStudentScores().then(r => console.log(r));
       },
-      error: (err) =>
-      {
-        throw new Error(err.message)
+      error: (err) => {
+        console.error('Error loading users:', err);
+        this.studentList = []; // Ensure it's always an array
       }
-    })
+    });
   }
 
-  getUserScore(user: User): number {
-    return (user.profilesInGroups?.find((profile) => { profile.groupId === this.groupId })?.score) || 0
+  async getUserScore(user: User): Promise<number> {
+    try {
+      const submissions = await this.submissionService
+          .getSubmissionsByStudentIdAndGroupId(user.id, this.groupId)
+          .toPromise();
+
+      if (!submissions) {
+        return 0;
+      }
+
+      return submissions.reduce((total, submission) => total + (submission.score || 0), 0);
+    } catch (error) {
+      console.error('Error fetching submissions:', error);
+      return 0;
+    }
   }
 
   kickStudent(studentId: number) {
@@ -232,7 +272,7 @@ export class GroupMembersViewComponent implements OnInit {
     console.log(this.studentList);
 
     // Llamar a leaveGroup del servicio
-    this.authService.leaveGroup(studentId, this.groupId).subscribe({
+    this.groupService.kickStudentFromGroup(studentId,this.groupId).subscribe({
       next: () => {
         console.log(`Estudiante ${studentId} eliminado del grupo ${this.groupId}`);
       },
@@ -241,4 +281,16 @@ export class GroupMembersViewComponent implements OnInit {
       }
     });
   }
+
+  get filteredStudents(): User[] {
+    if (this.selectedStudentId) {
+      return this.studentList.filter(s => s.id === this.selectedStudentId);
+    }
+    return this.studentList;
+  }
+
+  clearSelection() {
+    this.selectedStudentId = null;
+  }
+
 }

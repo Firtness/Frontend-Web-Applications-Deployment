@@ -7,7 +7,6 @@ import {RegisterComponent} from "../../../iam/pages/register/register.component"
 @Component({
   selector: 'app-auth-layout',
   imports: [
-    RouterOutlet,
     LoginComponent,
     RegisterComponent
   ],

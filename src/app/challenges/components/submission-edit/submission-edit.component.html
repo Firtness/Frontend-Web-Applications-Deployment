@@ -1,33 +1,28 @@
 <form [formGroup]="submissionForm" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="fill">
-        <mat-label>ID (Auto)</mat-label>
-        <input matInput formControlName="id" type="number" readonly />
-    </mat-form-field>
+
+    @if (student) {
+        <p>🎓 {{ 'student' | translate }}: {{ student.firstName }} {{ student.lastName }}</p>
+    }
+
+    <div style="height: 10px"></div>
+    <div class="submission-content-title">
+        📄 {{ 'content' | translate }}:
+    </div>
+    <div class="submission-content">
+        <p>{{ data.content }}</p>
+    </div>
 
     <mat-form-field appearance="fill">
-        <mat-label>🐝 Challenge ID</mat-label>
-        <input matInput formControlName="challengeId" type="number" />
+        <mat-label>⭐ {{ 'score' | translate }}</mat-label>
+        <input matInput formControlName="score" type="number" min="0" max="20"/>
+        <mat-error *ngIf="submissionForm.get('score')?.hasError('max')">
+            {{ 'scoreRangeError' | translate }}
+        </mat-error>
     </mat-form-field>
-
-    <mat-form-field appearance="fill">
-        <mat-label>🎓 Student ID</mat-label>
-        <input matInput formControlName="studentId" type="number" />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-        <mat-label>📄 Contenido</mat-label>
-        <textarea matInput formControlName="content" rows="4"></textarea>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-        <mat-label>⭐ Puntaje</mat-label>
-        <input matInput formControlName="score" type="number" />
-    </mat-form-field>
-
 
     <div class="button-group">
-        <button mat-raised-button color="primary" type="submit">✅ Guardar</button>
-        <button mat-button color="warn" type="button" (click)="onCancel()">❌ Cancelar</button>
+        <button mat-raised-button color="primary" type="submit">✅ {{ 'save' | translate }}</button>
+        <button mat-button color="warn" type="button" (click)="onCancel()">❌ {{ 'cancel' | translate }}</button>
     </div>
 
 </form>

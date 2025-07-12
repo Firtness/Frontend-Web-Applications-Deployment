@@ -8,6 +8,8 @@ import {GroupMembersViewComponent} from "./group/pages/group-members-view/group-
 import {NoAccessPageComponent} from "./public/pages/no-access-page/no-access-page.component";
 import { StudentAnalyticsComponent } from './analytics/components/student-analytics/student-analytics.component';
 import { AuthLayoutComponent } from './core/layouts/auth-layout/auth-layout.component';
+import {PieAnalyticsComponent} from "./analytics/components/pie-analytics/pie-analytics.component";
+import {ChallengeAnalyticsComponent} from "./analytics/components/challenge-analytics/challenge-analytics.component";
 
 export const routes: Routes = [
   { path: 'dashboard', component: HomeComponent },
@@ -26,5 +28,12 @@ export const routes: Routes = [
   {
     path: 'group/:groupId/student/:studentId/analytics',
     component: StudentAnalyticsComponent
-  }
+  },
+  {
+    path: 'group/:groupId/pie-analytics',
+    component: PieAnalyticsComponent
+  },
+  { path: 'group/:groupId/challenge-analytics',
+    component: ChallengeAnalyticsComponent },
+
 ];

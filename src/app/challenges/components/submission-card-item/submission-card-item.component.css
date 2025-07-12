@@ -15,6 +15,20 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
+.red-score {
+    color: #f44336; /* Rojo de Material Design */
+    font-weight: bold;
+}
+
+.green-score {
+    color: #4caf50; /* Verde de Material Design */
+    font-weight: bold;
+}
+
+.not-graded {
+    color: #9e9e9e; /* Gris para "Not graded yet" */
+}
+
 /* Imagen */
 .image-wrapper img {
     height: 180px;
@@ -41,7 +55,6 @@ mat-card-content span {
     display: block;
     margin-bottom: 6px;
     font-size: 14px;
-    color: #555;
 }
 
 mat-card-content strong {

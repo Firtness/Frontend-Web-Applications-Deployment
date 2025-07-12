@@ -27,10 +27,10 @@ mat-grid-tile {
     padding: 12px;
 }
 
-mat-grid-tile:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
+/*mat-grid-tile:hover {*/
+/*    transform: translateY(-4px);*/
+/*    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);*/
+/*}*/
 
 /* Fade-in y slide-in animaciones */
 @keyframes fadeIn {

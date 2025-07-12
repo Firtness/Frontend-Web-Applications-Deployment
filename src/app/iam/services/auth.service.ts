@@ -9,46 +9,37 @@ import {ProfileInGroup} from "../model/profile-in-group.entity";
 
 
 const usersResourceEndpoint = environment.usersEndpointPath;
+const authenticationResourceEndpoint = environment.authenticationEndpointPath;
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService extends BaseService<User> {
 
-  constructor(private groupJoinCodeService: GroupJoinCodeService ) {
+    private readonly authenticationPath: string;
+
+  constructor() {
       super();
-      this.resourceEndpoint= usersResourceEndpoint;
+      this.resourceEndpoint = usersResourceEndpoint;
+      this.authenticationPath = authenticationResourceEndpoint;
   }
 
 
   login(email: string, password: string): Observable<User> {
-    return this.http.get<User>(`${this.resourcePath()}/email/${email}/password/${password}`)
+    return this.http.post<User>(`${this.serverBaseUrl}${this.authenticationPath}/sign-in`, {
+        "email": email,
+        "password": password
+    }, this.httpOptions);
 
   }
 
-
-
-  updateUser(): void {
-
-      if (this.isUserLoggedIn()) {
-          this.http.get<User>(`${this.resourcePath()}/${this.getUser()?.id}`).subscribe(
-              {
-                  next: (user) => {
-                      this.setUser(user);
-                  },
-                  error: (err) => {
-                      throw new Error(err.message);
-                  }
-              }
-          )
-      }
-
-  }
-
-  register(user: User): Observable<User> {
-      if(!user.profilesInGroups){
-          user.profilesInGroups = [];
-      }
-    return this.http.post<User>(`${this.resourcePath()}`, JSON.stringify(user), this.httpOptions)
+  register(signUp: {
+      email: string,
+      firstName: string,
+      lastName: string,
+      password: string,
+      roles: string[],
+           }): Observable<User> {
+    return this.http.post<User>(`${this.serverBaseUrl}${this.authenticationPath}/sign-up`, JSON.stringify(signUp), this.httpOptions)
   }
 
   isAuthenticated(): boolean {
@@ -60,7 +51,15 @@ export class AuthService extends BaseService<User> {
   }
 
   getUser(): User | null {
-    return JSON.parse(localStorage.getItem('auth_user') || 'null');
+    return JSON.parse(localStorage.getItem('auth_user') || 'null') || null;
+  }
+
+  getToken(): string | null {
+      return localStorage.getItem('auth_token');
+  }
+
+  setToken(token: string) {
+      this.tokenService.setToken(token)
   }
 
   setUser(user: User): void {
@@ -102,10 +101,14 @@ export class AuthService extends BaseService<User> {
       return groups.includes(groupId)
   }
 
+  getUserById(id: number): Observable<User> {
+      return this.http.get<User>(`${this.resourcePath()}/${id}`, this.httpOptions);
+  }
 
 
-    leaveGroup(userId: number, groupId: number): Observable<void> {
-        const url = `${this.resourcePath()}/leave/${userId}/${groupId}`;
+
+    leaveGroup(groupId: number): Observable<void> {
+        const url = `${this.resourcePath()}/leave/${groupId}`;
         return this.http.delete<void>(url, this.httpOptions);
     }
 

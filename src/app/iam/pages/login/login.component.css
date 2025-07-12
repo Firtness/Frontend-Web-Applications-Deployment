@@ -1,4 +1,7 @@
-
+h2{
+    text-align: center;
+    font-size: 40px;
+}
 
 form {
     display: flex;
@@ -7,7 +10,7 @@ form {
 }
 
 input {
-    background-color: transparent;
+    background-color: #fff8e9;
     padding: 5px;
     font-size: 14px;
     border: 1px solid black;
@@ -17,6 +20,10 @@ input {
 input:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+form input::placeholder {
+    color: #000000; /* Un gris un poco más oscuro */
 }
 
 button {
@@ -34,6 +41,11 @@ button:hover {
     transition: transform 0.3s ease;
 }
 
+.fadeIn {
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -45,7 +57,10 @@ button:hover {
 
 p {
     text-align: left;
-    color: gray;
+    color: black;
+    text-decoration: underline dotted;
+    font-weight: bold;
+    font-size: medium;
 }
 
 p:hover{

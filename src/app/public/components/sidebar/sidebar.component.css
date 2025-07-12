@@ -11,6 +11,7 @@ mat-sidenav {
   flex-direction: column;
   padding: 16px 12px;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0px;
 }
 
 mat-sidenav-content {
@@ -92,12 +93,14 @@ mat-toolbar button[mat-icon-button]:hover {
 .logo {
   object-fit: contain;
   border-radius: 50%;
+  border-width: thick;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background-color: #ffd850;
 }
 
 .brand-title {
-  font-size: 20px;
-  margin-top: 10px;
+  font-size: 25px;
+  margin-top: 20px;
   color: #333;
   font-weight: bold;
 }
@@ -108,6 +111,8 @@ mat-toolbar button[mat-icon-button]:hover {
   align-items: center;
   gap: 10px;
   font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 10px;
   color: #333;
   transition: background 0.2s ease;
   border-radius: 8px;

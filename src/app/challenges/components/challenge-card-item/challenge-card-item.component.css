@@ -2,8 +2,8 @@
 .horizontal-card {
     display: flex;
     flex-direction: row;
-    width: 100%;
-    max-width: 700px;
+    width: 500px;
+    min-height: 200px;
     margin: 20px;
     border-radius: 10px;
     overflow: hidden;
@@ -44,6 +44,11 @@ mat-card-content {
     font-size: 14px;
     color: #333;
     flex-grow: 1;
+    overflow-wrap: break-word; /* Rompe palabras largas */
+    word-wrap: break-word; /* Compatibilidad con navegadores antiguos */
+    word-break: break-word; /* Evita desbordamiento */
+    hyphens: auto; /* Opcional: añade guiones para palabras largas */
+    margin-bottom: 8px; /* Espacio antes del deadline */
 }
 
 /* Espacio adicional para deadline */

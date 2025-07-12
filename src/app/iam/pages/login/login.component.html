@@ -1,23 +1,31 @@
-<h2>Sign In</h2>
-<p (click)="switchToRegister()">Don’t have an account? Sign Up</p>
-<div class="social-buttons">
-    <button class="social-button facebook" (click)="navigateTo('https://www.facebook.com')">
-        <i class="fab fa-facebook"></i>
-        <span>Facebook</span>
-    </button>
-    <button class="social-button twitter" (click)="navigateTo('https://www.twitter.com')">
-        <i class="fab fa-twitter"></i>
-        <span>Twitter</span>
-    </button>
-    <button class="social-button apple" (click)="navigateTo('https://www.apple.com')">
-        <i class="fab fa-apple"></i>
-        <span>Apple</span>
-    </button>
+<div class="fadeIn">
+    <h2>{{ 'signIn' | translate }}</h2>
+    <p (click)="switchToRegister()">
+        {{ 'signUpPrompt' | translate }} {{ 'signUp' | translate }}
+    </p>
+    <div class="social-buttons">
+        <button class="social-button facebook" (click)="navigateTo('https://www.facebook.com')">
+            <i class="fab fa-facebook"></i>
+            <span>{{ 'facebook' | translate }}</span>
+        </button>
+        <button class="social-button twitter" (click)="navigateTo('https://www.twitter.com')">
+            <i class="fab fa-twitter"></i>
+            <span>{{ 'twitter' | translate }}</span>
+        </button>
+        <button class="social-button apple" (click)="navigateTo('https://www.apple.com')">
+            <i class="fab fa-apple"></i>
+            <span>{{ 'apple' | translate }}</span>
+        </button>
+    </div>
+    <div style="height: 10px"></div>
+    <span>{{ 'or' | translate }}</span>
+    <div style="height: 10px"></div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <input formControlName="email" type="email" [placeholder]="'email' | translate" /><br>
+        <input formControlName="password" type="password" [placeholder]="'password' | translate" /><br>
+        <p (click)="navigateTo('https://outlook.office.com/mail/')">
+            {{ 'forgotPassword' | translate }}
+        </p>
+        <button type="submit">{{ 'continue' | translate }}</button>
+    </form>
 </div>
-<span>OR</span>
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <input formControlName="email" type="email" placeholder="Email" /><br>
-    <input formControlName="password" type="password" placeholder="Password" /><br>
-    <p (click)="navigateTo('https://outlook.office.com/mail/')">Forgot password?</p>
-    <button type="submit">Continue</button>
-</form>

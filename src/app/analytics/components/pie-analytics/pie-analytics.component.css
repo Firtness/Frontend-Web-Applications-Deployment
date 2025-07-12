@@ -1,0 +1,133 @@
+.analytics-container {
+    padding: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: linear-gradient(145deg, #ffffff, #f2f3f7);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.analytics-container:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.analytics-container h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.chart-container {
+    position: relative;
+    height: 400px;
+    margin: 30px 0;
+    border-radius: 12px;
+    background: white;
+    padding: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: #e8f5e9;
+    padding: 16px 24px;
+    border-radius: 12px;
+    margin: 20px 0;
+    font-size: 16px;
+    color: #2e7d32;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+}
+
+.submissions-list {
+    margin-top: 30px;
+    background-color: #fafafa;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.submissions-list:hover {
+    transform: scale(1.01);
+}
+
+.submissions-list h3 {
+    margin-bottom: 16px;
+    font-size: 20px;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+    background-color: #f0f0f0;
+    color: #555;
+    font-weight: 600;
+}
+
+tr:hover {
+    background-color: #f9f9f9;
+}
+
+.back-button {
+    margin-top: 30px;
+    display: block;
+    padding: 12px 24px;
+    background: #3f51b5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.back-button:hover {
+    background: #303f9f;
+    transform: translateY(-2px);
+    cursor: pointer;
+}
+
+/* Loader */
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0;
+    gap: 16px;
+    color: #777;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .stats {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    th, td {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .back-button {
+        width: 100%;
+    }
+}

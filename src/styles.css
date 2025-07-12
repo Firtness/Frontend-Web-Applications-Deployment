@@ -1,5 +1,6 @@
 @import "assets/css/variables.css";
 
+
 /* Reglas base */
 * {
     box-sizing: border-box;
@@ -14,6 +15,9 @@ html, body {
 /* Fondo con imagen */
 body {
     background-color: var(--c-primary-soft);
+    background-image: url("../public/assets/images/background-honeycomb.png");
+    background-repeat: repeat-y; /* Repite verticalmente (en columnas) */
+    background-size: 100% auto; /* Ancho automático, altura 100% del contenedor */
 }
 
 

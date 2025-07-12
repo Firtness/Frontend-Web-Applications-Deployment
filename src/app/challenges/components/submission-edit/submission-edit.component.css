@@ -9,6 +9,16 @@ form {
     animation: fadeIn 0.5s ease;
 }
 
+.submission-content {
+    background-color: #ffffff;
+    border-color: black;
+    border-width: 10px;
+    min-height: 200px;
+    padding: 1px 10px 10px 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 mat-form-field {
     width: 100%;
     margin-bottom: 20px;

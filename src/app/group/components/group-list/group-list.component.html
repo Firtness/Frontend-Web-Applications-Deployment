@@ -1,48 +1,35 @@
+<div class="join-code-section">
 
-    <div class="join-code-section">
-
-        @if (user.role == 'ROLE_TEACHER') {
-            <div class="create-group-container">
-              <h3 style="margin: 0;">Create a new group: </h3>
-              <button mat-icon-button (click)="openCreateGroupDialog()" class="create-button" style="margin-left: 10px"><mat-icon style="text-align: center">add_box</mat-icon></button>
-            </div>
-        }
-        @else {
-            <div class="join-group-container">
-                <h3 style="margin: 0 10px 10px 0;">Join Group</h3>
-                <mat-form-field class="example-form-field">
-                    <mat-label>Insert Code</mat-label>
-                    <input matInput type="text" [(ngModel)]="joinCodeString">
-                    @if (joinFailed) {
-                        <mat-hint>El código ingresado no existe o está vacío</mat-hint>
-                    }
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="joinCodeString=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-                <button mat-flat-button (click)="submitCode()">Join</button>
-            </div>
-        }
-        <!--@else {
-            <h3 style="padding: 10px">Join Group</h3>
-            <mat-form-field style="padding: 10px" class="example-form-field">
-                <mat-label>Insert Code</mat-label>
+    @if (user.roles[0] == 'ROLE_TEACHER') {
+        <div class="create-group-container">
+            <h3 style="margin: 0;">{{ 'createNewGroup' | translate }}:</h3>
+            <button mat-icon-button (click)="openCreateGroupDialog()" class="create-button" style="margin-left: 10px">
+                <mat-icon style="text-align: center">add_box</mat-icon>
+            </button>
+        </div>
+    }
+    @else {
+        <div class="join-group-container">
+            <h3 style="margin: 0 10px 10px 0;">{{ 'joinGroup' | translate }}</h3>
+            <mat-form-field class="example-form-field">
+                <mat-label>{{ 'insertCode' | translate }}</mat-label>
                 <input matInput type="text" [(ngModel)]="joinCodeString">
                 @if (joinFailed) {
                     <mat-hint>El código ingresado no existe o está vacío</mat-hint>
                 }
                 <button matSuffix mat-icon-button aria-label="Clear" (click)="joinCodeString=''">
                     <mat-icon>close</mat-icon>
-
                 </button>
             </mat-form-field>
-        }-->
-    </div>
+            <button mat-flat-button (click)="submitCode()">{{ 'joinGroup' | translate }}</button>
+        </div>
+    }
+</div>
 
-    <h2 class="section-title">Your Groups</h2>
+<h2 class="section-title">{{ 'yourGroups' | translate }}</h2>
 
-    <div class="group-cards">
-        @for (group of groups; track group.id) {
-            <app-group-item [group]="group"></app-group-item>
-        }
-    </div>
+<div class="group-cards">
+    @for (group of groups; track group.id) {
+        <app-group-item [group]="group"></app-group-item>
+    }
+</div>

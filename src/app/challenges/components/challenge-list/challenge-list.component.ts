@@ -6,14 +6,16 @@ import {ChallengeCardItemComponent} from "../challenge-card-item/challenge-card-
 import {GroupService} from "../../../group/services/group.service";
 import {AuthService} from "../../../iam/services/auth.service";
 import {User} from "../../../iam/model/user.entity";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-challenge-list',
-  imports: [
-    MatGridList,
-    MatGridTile,
-    ChallengeCardItemComponent
-  ],
+    imports: [
+        MatGridList,
+        MatGridTile,
+        ChallengeCardItemComponent,
+        TranslatePipe
+    ],
   templateUrl: './challenge-list.component.html',
   standalone: true,
   styleUrl: './challenge-list.component.css'

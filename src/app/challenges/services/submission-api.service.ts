@@ -22,8 +22,12 @@ export class SubmissionApiService extends BaseService<Submission>{
         .pipe(retry(2), catchError(this.handleError));
   }
 
-  createSubmission(submission: Submission):Observable<Submission> {
-    return this.create(submission);
+  createSubmission(submission: {
+    challengeId: number,
+    content: String,
+    imageUrl: string
+  }):Observable<Submission> {
+    return this.http.post<Submission>(`${this.resourcePath()}`, submission, this.httpOptions);
   }
 
   updateSubmission(id: number, submission: Submission): Observable<Submission> {
@@ -36,5 +40,25 @@ export class SubmissionApiService extends BaseService<Submission>{
         .pipe(retry(2), catchError(this.handleError));
   }
 
+  gradeSubmission(id: number, score: number): Observable<Submission> {
+    return this.http.put<Submission>(`${this.resourcePath()}/${id}/grade`, { score: score }, this.httpOptions)
+  }
+
+  getSubmissionsByStudentIdAndGroupId(studentId: number, groupId: number): Observable<Submission[]> {
+    return this.http.get<Submission[]>(`${this.resourcePath()}/student/${studentId}/group/${groupId}`, this.httpOptions)
+  }
+
+  getByStudentIdAndChallengeId(studentId: number, challengeId: number): Observable<Submission[]> {
+    return this.http.get<Submission[]>(`${this.resourcePath()}/students/${studentId}/challenges/${challengeId}`, this.httpOptions)
+  }
+
+  getSubmissionsByGroupId(groupId: number): Observable<Submission[]> {
+    const url = `${this.resourcePath()}/group/${groupId}`;
+    return this.http.get<Submission[]>(url, this.httpOptions)
+        .pipe(
+            retry(2),
+            catchError(this.handleError)
+        );
+  }
 
 }

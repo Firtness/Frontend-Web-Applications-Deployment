@@ -95,6 +95,10 @@ mat-form-field {
     background-color: #fcfcfc;
 }
 
+.user-table tr {
+    background-color: #fff;
+}
+
 .user-table tr:hover {
     background-color: #f3f6fd;
     transition: background-color 0.3s ease;

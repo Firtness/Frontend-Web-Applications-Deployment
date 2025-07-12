@@ -1,29 +1,35 @@
-
-    <h1>Profile</h1>
+<h1>{{ 'profileTitle' | translate }}</h1>
 <hr>
+
 <div class="profile-card">
-            <div class="profile-image">
-                <img [src]="user.imageUrl" alt="Profile Image" />
-            </div>
+    <div class="profile-image">
+        <img [src]="user?.roles?.[0] === 'ROLE_TEACHER' ? teacherImg : studentImg" alt="Profile Image" />
+    </div>
 
-            <div class="profile-details">
-                <h2>{{ user.firstName }} {{ user.lastName }}</h2>
-                <p class="role">{{ user.role }}</p>
-                <p class="email">{{ user.email }}</p>
+    <div class="profile-details">
+        <h2>{{ user?.firstName }} {{ user?.lastName }}</h2>
+        <p class="role">{{ user?.roles?.[0] }}</p>
+        <p class="email">{{ user?.email }}</p>
 
-                <button class="edit-button" (click)="edit()">Editar contraseña</button>
-
-                <div class="stats">
-                    <h3>Estadísticas</h3>
-                    <ul>
-
-
-                        <li><strong>Grupos a los que está unido:</strong> {{ groupCount }}</li>
-                        <li *ngIf="user.role === 'ROLE_STUDENT'"><strong>Total de entregas realizadas:</strong> {{ submissionCount }}</li>
-                        <li *ngIf="user.role === 'ROLE_STUDENT'"><strong>Último grupo unido:</strong> {{ lastGroupName }}</li>
-                        <li *ngIf="user.role === 'ROLE_TEACHER'"><strong>Último grupo creado:</strong> {{ lastGroupName }}</li>
-                        <li *ngIf="user.role === 'ROLE_TEACHER'"><strong>Retos creados en {{ lastGroupName }}:</strong> {{ challengeCount }}</li>
-                    </ul>
-                </div>
-            </div>
+        <div class="stats">
+            <h3>{{ 'statistics' | translate }}</h3>
+            <ul>
+                <li>
+                    <strong>{{ 'groupsJoined' | translate }}:</strong> {{ groupCount }}
+                </li>
+                <li *ngIf="user?.roles[0] === 'ROLE_STUDENT'">
+                    <strong>{{ 'totalSubmissions' | translate }}:</strong> {{ submissionCount }}
+                </li>
+                <li *ngIf="user?.roles[0] === 'ROLE_STUDENT'">
+                    <strong>{{ 'lastJoinedGroup' | translate }}:</strong> {{ lastGroupName }}
+                </li>
+                <li *ngIf="user?.roles[0] === 'ROLE_TEACHER'">
+                    <strong>{{ 'lastCreatedGroup' | translate }}:</strong> {{ lastGroupName }}
+                </li>
+                <li *ngIf="user?.roles[0] === 'ROLE_TEACHER'">
+                    <strong>{{ 'challengesCreatedIn' | translate }} {{ lastGroupName }}:</strong> {{ challengeCount }}
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>

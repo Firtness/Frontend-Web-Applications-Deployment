@@ -6,26 +6,35 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {SubmissionApiService} from "../../services/submission-api.service";
 import {MatButton} from "@angular/material/button";
 import {Submission} from "../../model/submission.entity";
+import {NgIf} from "@angular/common";
+import {AuthService} from "../../../iam/services/auth.service";
+import {User} from "../../../iam/model/user.entity";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-submission-edit',
   templateUrl: './submission-edit.component.html',
-  imports: [
-    MatInput,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatButton,
-  ],
+    imports: [
+        MatInput,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatButton,
+        NgIf,
+        TranslatePipe,
+    ],
+  standalone: true,
   styleUrls: ['./submission-edit.component.css']
 })
 export class SubmissionEditComponent implements OnInit {
   submissionForm!: FormGroup;
   submissionToUpdate: Submission = new Submission({});
+  student: User = new User({});
   constructor(
       private fb: FormBuilder,
       private dialogRef: MatDialogRef<SubmissionEditComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
-      private submissionService: SubmissionApiService
+      private submissionService: SubmissionApiService,
+      private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -37,22 +46,29 @@ export class SubmissionEditComponent implements OnInit {
       score: [this.data.score, Validators.required],
       imageUrl: [{ value: this.data.imageUrl, disabled: true }]
     });
+
+    this.authService.getUserById(this.data.studentId).subscribe({
+      next: (response) => {
+        this.student = response;
+      },
+      error: (err) => {
+        throw new Error(err.message);
+      }
+    })
+
   }
 
   onSubmit(): void {
     if (this.submissionForm.valid) {
       this.submissionToUpdate = { ...this.submissionForm.getRawValue() };
 
-      // 🔄 Asegúrate de pasar también la imageUrl si es necesaria
       if (!this.submissionToUpdate.imageUrl) {
         this.submissionToUpdate.imageUrl = this.data.imageUrl; // o asigna una default
       }
 
-      this.submissionService.updateSubmission(this.submissionToUpdate.id, this.submissionToUpdate).subscribe({
+      this.submissionService.gradeSubmission(this.submissionToUpdate.id, this.submissionToUpdate.score).subscribe({
         next: (response) => {
           console.log('Submission updated successfully', response);
-
-          // ⬇️ Cerramos el diálogo y notificamos que hubo cambios
           this.dialogRef.close(true);
         },
         error: (error) => {

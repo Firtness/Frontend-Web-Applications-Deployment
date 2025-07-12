@@ -20,25 +20,27 @@ import {FormsModule} from "@angular/forms";
 import {MatFormField, MatInput, MatLabel} from "@angular/material/input";
 import {SubmissionApiService} from "../../services/submission-api.service";
 import {Submission} from "../../model/submission.entity";
+import {TranslatePipe} from "@ngx-translate/core";
 
 const MAX_ATTEMPTS = 3;
 @Component({
   selector: 'app-challenge-view',
-  imports: [
-    MatButton,
-    MatCard,
-    MatCardActions,
-    MatCardContent,
-    MatCardSubtitle,
-    MatCardTitle,
-    RouterLink,
-    SubmissionCardListComponent,
-    NgIf,
-    FormsModule,
-    MatFormField,
-    MatInput,
+    imports: [
+        MatButton,
+        MatCard,
+        MatCardActions,
+        MatCardContent,
+        MatCardSubtitle,
+        MatCardTitle,
+        RouterLink,
+        SubmissionCardListComponent,
+        NgIf,
+        FormsModule,
+        MatFormField,
+        MatInput,
+        TranslatePipe,
 
-  ],
+    ],
   templateUrl: './challenge-view.component.html',
   standalone: true,
   styleUrl: './challenge-view.component.css'
@@ -48,7 +50,7 @@ export class ChallengeViewComponent implements OnInit {
   @ViewChild(SubmissionCardListComponent)
   submissionListComponent!: SubmissionCardListComponent;
 
-  challengeToSubmit: Submission = new Submission({});
+  submissionToSubmit: Submission = new Submission({});
   challenge:Challenge =new Challenge({})  ;
   isLoading = true;
   tempUser= new User({});
@@ -87,32 +89,23 @@ export class ChallengeViewComponent implements OnInit {
         next: (challenge) => {
           this.challenge = challenge;
           this.isLoading = false;
-          if (!this.authService.userIsInGroup(this.groupId) ||
-              !this.authService.isUserLoggedIn() ||
-              this.challenge.groupId != this.groupId) {
-
-            this.router.navigate(['no-access']);
-          }
         },
         error: (err) => {
           console.error('Error loading challenge:', err);
           this.isLoading = false;
+          this.router.navigate(['no-access']);
         }
       });
     }
   }
 
   createSubmission(): void {
-    const submission :Submission= {
-      id: 0,
-      challengeId: this.challenge.id,
-      studentId: this.tempUser.id,
-      content: this.challengeToSubmit.content,
-      score: 0,
-      imageUrl: this.challengeToSubmit.imageUrl,
-    };
 
-    this.submissionService.createSubmission(submission).subscribe({
+    this.submissionService.createSubmission({
+      challengeId: this.challenge.id,
+      content: this.submissionToSubmit.content,
+      imageUrl: this.submissionToSubmit.imageUrl
+    }).subscribe({
       next: (response) => {
         console.log('Submission creada exitosamente:', response);
         this.isSubmissionFormVisible = false;
@@ -123,7 +116,7 @@ export class ChallengeViewComponent implements OnInit {
         }
 
         // Limpiar el contenido para evitar duplicación
-        this.challengeToSubmit.content = '';
+        this.submissionToSubmit.content = '';
 
         this.remainingAttempts--;
         localStorage.setItem('remainingAttempts', this.remainingAttempts.toString());
@@ -143,6 +136,16 @@ export class ChallengeViewComponent implements OnInit {
   resetAttempts(): void {
     this.remainingAttempts = MAX_ATTEMPTS;
     localStorage.setItem('remainingAttempts', this.remainingAttempts.toString());
+  }
+
+  public formatDate() {
+    let deadline: Date = new Date(this.challenge.deadline);
+    console.log(deadline);
+
+    const padZero = (num: number): string => num < 10 ? `0${num}` : `${num}`;
+
+    return `${deadline.getDate()}/${deadline.getMonth() + 1}/${deadline.getFullYear()} at ` +
+        `${padZero(deadline.getHours())}:${padZero(deadline.getMinutes())}:${padZero(deadline.getSeconds())}`;
   }
 
 

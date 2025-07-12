@@ -7,18 +7,34 @@
 
     <mat-card-content>
 
-        <mat-card-header class="custom-header">
-            Submission #{{ submission.id }}
+        <mat-card-header class="custom-header" style="text-align: center">
+            {{ 'submission' | translate }} #{{ submission.id }}
         </mat-card-header>
 
-        <span><strong>Student ID:</strong> {{ submission.studentId }}</span>
-        <span><strong>Content:</strong> {{ submission.content }}</span>
-        <span><strong>Score:</strong> {{ submission.score }}</span>
+        <span style="text-align: center">
+      <strong>{{ 'student' | translate }}:</strong>
+            {{ student.firstName }} {{ student.lastName }}
+    </span>
+
+        <span style="text-align: center">
+      <strong>{{ 'score' | translate }}:</strong>
+            @if (submission.status == "NOT_GRADED") {
+                <span class="not-graded">{{ 'notGradedYet' | translate }}</span>
+            } @else {
+                <span [class.red-score]="submission.score <= 12"
+                      [class.green-score]="submission.score > 12">
+          {{ submission.score }}
+        </span>
+            }
+    </span>
 
     </mat-card-content>
 
     <mat-card-footer>
-        <button *ngIf="currentUser.role === 'ROLE_TEACHER'" mat-button (click)="editSubmission()">Set Score</button>
+        <button *ngIf="currentUser.roles[0] === 'ROLE_TEACHER'"
+                mat-button (click)="editSubmission()">
+            {{ 'setScore' | translate }}
+        </button>
     </mat-card-footer>
 
 </mat-card>

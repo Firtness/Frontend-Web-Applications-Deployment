@@ -17,8 +17,8 @@ export class GroupJoinCodeService extends BaseService<GroupJoinCode> {
     this.resourceEndpoint = groupsResourceEndpoint;
   }
 
-  public joinUserToGroupByKey(userId: number, key: string): Observable<Group> {
-      return this.http.get<Group>(`${this.resourcePath()}/join/${userId}/${key}`, this.httpOptions);
+  public joinUserToGroupByKey(key: string): Observable<Group> {
+      return this.http.get<Group>(`${this.resourcePath()}/join/${key}`, this.httpOptions);
   }
 
   public getByKey(key: string): Observable<GroupJoinCode> {

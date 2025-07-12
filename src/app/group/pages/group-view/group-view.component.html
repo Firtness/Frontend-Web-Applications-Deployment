@@ -1,34 +1,37 @@
 <div style="height: 90px"></div>
 <div class="group-details-container">
     @if (isLoading) {
-        <p>Loading group details...</p>
+        <p>{{ 'loadingGroupDetails' | translate }}</p>
     } @else {
         <mat-card>
             <div style="display: flex; align-items: center; justify-content: center; padding: 10px; text-align: center;">
-                <img src="{{ group.imageUrl }}" alt="Descripción de la imagen" style="border-radius: 10px; max-width: 30%; height: 100px;">
+                <img src="{{ group.imageUrl }}" alt="Group image" style="border-radius: 10px; max-width: 30%; height: 100px;">
                 <div>
                     <mat-card-header>
                         <mat-card-title>{{ group.name }}</mat-card-title>
-                        <mat-card-subtitle>Group Details</mat-card-subtitle>
+                        <mat-card-subtitle>{{ 'groupDetails' | translate }}</mat-card-subtitle>
                     </mat-card-header>
-                    <p><strong>Description:</strong> {{ group.description }}</p>
+                    <p><strong>{{ 'description' | translate }}:</strong> {{ group.description }}</p>
                 </div>
             </div>
 
             <mat-card-content>
-                <!-- REFERENCIA LOCAL AGREGADA -->
                 <app-challenge-list #challengeList [currentGroupId]="group.id"></app-challenge-list>
             </mat-card-content>
 
             <mat-card-actions>
-                <button mat-raised-button routerLink="/dashboard">Back to Groups</button>
-                <button mat-raised-button [routerLink]="['/group', group.id, 'members']">See Members</button>
+                <button mat-raised-button routerLink="/dashboard">{{ 'backToGroups' | translate }}</button>
+                <button mat-raised-button [routerLink]="['/group', group.id, 'members']">{{ 'seeMembers' | translate }}</button>
                 <div class="button-spacer"></div>
-                @if (user.role == "ROLE_TEACHER") {
-                    <button mat-flat-button class="create-challenge-button" (click)="openCreateChallengeDialog()">Create Challenge</button>
-                    <button mat-flat-button class="leave-button" (click)="deleteGroup()" routerLink="/dashboard">Delete Group</button>
+                @if (user.roles[0] == "ROLE_TEACHER") {
+
+                    <button mat-flat-button class="create-challenge-button" (click)="openCreateChallengeDialog()">{{ 'createChallenge' | translate }}</button>
+                    <button mat-flat-button class="leave-button" (click)="deleteGroup()">{{ 'deleteGroup' | translate }}</button>
+
                 } @else {
-                    <button mat-flat-button class="leave-button" (click)="leaveGroup()">Leave Group</button>
+                    <button mat-flat-button class="leave-button" (click)="leaveGroup()">
+                        {{ 'leaveGroup' | translate }}
+                    </button>
                 }
             </mat-card-actions>
         </mat-card>

@@ -1,8 +1,8 @@
 <div style="height: 90px"></div>
 <div class="code-section">
-    <button mat-flat-button [routerLink]="['/group', groupId]" style="margin-left: 100px">Back to Group</button>
+    <button mat-flat-button [routerLink]="['/group', groupId]" style="margin-right: auto; margin-left: 10px">Back to Group</button>
 
-    @if (user.role === 'ROLE_TEACHER') {
+    @if (user.roles[0] === 'ROLE_TEACHER') {
         <div class="join-code-container">
             @if (groupJoinCode != '') {
                 <div class="code-display">
@@ -35,72 +35,115 @@
     <thead>
     <h2>Profesor</h2>
     <tr>
-        <th>ID</th>
         <th>Name</th>
         <th>Last Name</th>
         <th>Email</th>
         <th>Role</th>
-    </tr>
-    </thead>
-    <tbody>
-            <tr>
-                <td>{{teacher.id}}</td>
-                <td>{{teacher.firstName}}</td>
-                <td>{{teacher.lastName}}</td>
-                <td>{{teacher.email}}</td>
-                <td>
-                <span [class.student]="teacher.role === 'ROLE_STUDENT'"
-                      [class.teacher]="teacher.role === 'ROLE_TEACHER'">
-                  {{teacher.role === 'ROLE_STUDENT' ? 'Estudiante' : 'Profesor'}}
-                </span>
-                </td>
-            </tr>
-
-    </tbody>
-</table>
-
-<table class="user-table">
-    <thead>
-    <h2>Alumnos</h2>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Score</th>
-        @if (user.role == 'ROLE_TEACHER') {
+        @if (user.roles[0] === 'ROLE_TEACHER') {
             <th>Actions</th>
         }
     </tr>
     </thead>
     <tbody>
-        @for (student of studentList; track student.id) {
             <tr>
-                <td>{{student.id}}</td>
+                <td>{{teacher.firstName}}</td>
+                <td>{{teacher.lastName}}</td>
+                <td>{{teacher.email}}</td>
+                <td>
+                <span [class.student]="teacher.roles[0] === 'ROLE_STUDENT'"
+                      [class.teacher]="teacher.roles[0] === 'ROLE_TEACHER'">
+                  {{teacher.roles[0] === 'ROLE_STUDENT' ? 'Estudiante' : 'Profesor'}}
+                </span>
+                </td>
+                @if (user.roles[0] === 'ROLE_TEACHER') {
+                <td>
+                    <button mat-icon-button
+                            [routerLink]="['/group', groupId, 'pie-analytics']"
+                            matTooltip="Ver analytics del grupo">
+                        <mat-icon>info</mat-icon>
+                    </button>
+                    <button mat-icon-button
+                            [routerLink]="['/group', groupId, 'challenge-analytics']"
+                            matTooltip="Ver analytics de Challenges">
+                        <mat-icon>analytics</mat-icon>
+                    </button>
+                </td>
+                }
+            </tr>
+
+    </tbody>
+</table>
+
+
+
+<table class="user-table">
+    <thead>
+    <h2>Alumnos</h2>
+    <tr>
+        <td colspan="6">
+            <div style="display: flex; align-items: center;">
+                <mat-form-field appearance="fill" style="width: 300px; margin-right: 10px;">
+                    <mat-label>Seleccionar un alumno</mat-label>
+                    <mat-select [(ngModel)]="selectedStudentId">
+                        <mat-option [value]="null">Todos los estudiantes</mat-option>
+                        <mat-option *ngFor="let student of studentList" [value]="student.id">
+                            <div style="display: flex; align-items: center;">
+                                <img
+                                        [src]="studentImg"
+                                        alt="student"
+                                        width="48"
+                                        height="48"
+                                        style="border-radius: 50%; object-fit: cover;">
+                                <span>{{ student.firstName }} {{ student.lastName }}</span>
+                            </div>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Score</th>
+        <th>Actions</th>
+
+    </tr>
+    </thead>
+    <tbody>
+        @for (student of filteredStudents; track student.id) {
+            <tr>
                 <td>{{student.firstName}}</td>
                 <td>{{student.lastName}}</td>
                 <td>{{student.email}}</td>
                 <td>
-                <span [class.student]="student.role === 'ROLE_STUDENT'"
-                      [class.teacher]="student.role === 'ROLE_TEACHER'">
-                  {{student.role === 'ROLE_STUDENT' ? 'Estudiante' : 'Profesor'}}
+                <span [class.student]="student.roles[0] === 'ROLE_STUDENT'"
+                      [class.teacher]="student.roles[0] === 'ROLE_TEACHER'">
+                  {{student.roles[0] === 'ROLE_STUDENT' ? 'Estudiante' : 'Profesor'}}
                 </span>
                 </td>
                 <td>
-                    {{getUserScore(student)}}
+                    {{studentScores[student.id] || 0}}
                 </td>
-                @if (user.role == 'ROLE_TEACHER') {
+
                     <td>
-                        <button mat-icon-button aria-label="kick" (click)="kickStudent(student.id)"><mat-icon>cancel</mat-icon></button>
+                        @if (user.roles[0] == "ROLE_TEACHER")
+                        {
+                            <button mat-icon-button aria-label="kick" (click)="kickStudent(student.id)"><mat-icon>cancel</mat-icon></button>
+                        }
                         <!-- Botón para los analytics -->
-                        <button mat-icon-button
-                                [routerLink]="['/group', groupId, 'student', student.id, 'analytics']"
-                                matTooltip="Ver analytics del estudiante">
-                            <mat-icon>info</mat-icon>
-                        </button>
+                        @if (user.roles[0] == "ROLE_TEACHER" || student.id == user.id)
+                        {
+                            <button mat-icon-button
+                                    [routerLink]="['/group', groupId, 'student', student.id, 'analytics']"
+                                    matTooltip="Ver analytics del estudiante">
+                                <mat-icon>info</mat-icon>
+                            </button>
+                        }
+
                     </td>
-                }
             </tr>
         } @empty {
             <tr>

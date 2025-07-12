@@ -16,24 +16,26 @@ import { MatLabel } from "@angular/material/form-field";
 
 import { ReactiveFormsModule } from "@angular/forms";
 import {MatIcon} from "@angular/material/icon";
+import {TranslatePipe} from "@ngx-translate/core";
 
 
 @Component({
   selector: 'app-challenge-create',
-  imports: [
-    FormsModule,
-    MatDialogActions,
-    MatDialogContent,
-    MatDialogTitle,
-    MatButton,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule, // ✅ importante para DateAdapter
-    MatLabel,
-    ReactiveFormsModule,
-    MatIcon
-  ],
+    imports: [
+        FormsModule,
+        MatDialogActions,
+        MatDialogContent,
+        MatDialogTitle,
+        MatButton,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatNativeDateModule, // ✅ importante para DateAdapter
+        MatLabel,
+        ReactiveFormsModule,
+        MatIcon,
+        TranslatePipe
+    ],
   templateUrl: './challenge-create.component.html',
   standalone: true,
   styleUrl: './challenge-create.component.css'

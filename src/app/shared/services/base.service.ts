@@ -3,19 +3,40 @@ import {HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/
 import {inject} from '@angular/core';
 import {catchError, Observable, retry, throwError} from 'rxjs';
 import {environment} from "../../../environments/environment";
+import {TokenService} from "../../public/services/token.service";
 
 /**
  * Abstract base service class providing common CRUD operations for REST APIs endpoints.
  */
 export abstract class BaseService<T> {
   /** HTTP headers configuration for JSON communication */
-  protected httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'})};
+  protected httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };
   /** Base URL for the server API */
   protected serverBaseUrl: string = `${environment.serverBaseUrl}`;
   /** Endpoint path for the specific resource */
   protected resourceEndpoint: string = '/resources';
   /** HTTP client for making API request */
   protected http: HttpClient = inject(HttpClient);
+
+  protected tokenService: TokenService = inject(TokenService);
+
+  protected constructor() {
+    this.setBaseToken(this.tokenService.getToken())
+
+    this.tokenService.tokenChanged.subscribe((token => {
+      this.setBaseToken(token);
+    }))
+  }
+
+  private setBaseToken(token: string) {
+    console.log('auth_token: ' + this.tokenService.getToken());
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      })
+    };
+  }
 
   protected handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

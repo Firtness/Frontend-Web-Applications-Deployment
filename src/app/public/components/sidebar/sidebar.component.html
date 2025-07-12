@@ -1,15 +1,16 @@
 <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #drawer class="sidenav" mode="side" fixedInViewport>
         <!-- Logo -->
+        <div style="height: 40px"></div>
         <div class="logo-container">
-            <img src="bee.png" alt="EduHive Logo" class="logo" width="80" height="80" />
+            <img ngSrc="bee.png" alt="EduHive Logo" class="logo" width="80" height="80" />
             <h2 class="brand-title">EduHive</h2>
         </div>
 
         <!-- Opciones de navegación -->
         <nav class="nav-links">
             @for (option of options; track option.label) {
-                <a mat-button [routerLink]="option.link" routerLinkActive="active" (click)="drawer.toggle()">
+                <a class="nav-button" mat-button [routerLink]="option.link" routerLinkActive="active" (click)="drawer.toggle()">
                     <mat-icon>house</mat-icon>
                     {{ option.label }}
                 </a>
@@ -19,7 +20,7 @@
                 Profile
             </a>
 
-            <a mat-button class="logout" routerLink="/auth" (click)="LogOut(); drawer.toggle()">
+            <a mat-button class="logout" (click)="LogOut(); drawer.toggle()">
                 <mat-icon>logout</mat-icon>
                 Log Out
             </a>

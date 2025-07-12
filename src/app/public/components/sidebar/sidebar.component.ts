@@ -10,6 +10,7 @@ import {MatToolbar} from '@angular/material/toolbar';
 import {MatIcon} from '@angular/material/icon';
 import {LanguageSwitcherComponent} from "../language-switcher/language-switcher.component";
 import {AuthService} from "../../../iam/services/auth.service";
+import {NgOptimizedImage} from "@angular/common";
 
 @Component({
   selector: 'app-sidebar',
@@ -25,6 +26,7 @@ import {AuthService} from "../../../iam/services/auth.service";
         MatSidenavContent,
         LanguageSwitcherComponent,
         RouterLinkActive,
+        NgOptimizedImage,
     ],
   templateUrl: './sidebar.component.html',
   standalone: true,
@@ -43,6 +45,7 @@ export class SidebarComponent {
 
   LogOut() {
       this.authService.logout()
+      this.router.navigate(['auth']);
   }
 
   IsUserConnected() {

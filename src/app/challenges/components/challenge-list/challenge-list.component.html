@@ -1,14 +1,10 @@
-
-
-
-@if (currentUser.role==="ROLE_TEACHER"){
-    <h3 style="margin-bottom: 20px;">Challenges</h3>
-
+@if (currentUser.roles[0] === "ROLE_TEACHER") {
+    <h3 style="margin-bottom: 20px;">{{ 'challenges' | translate }}</h3>
 } @else {
-    <h3>Your Challenges</h3>
+    <h3>{{ 'yourChallenges' | translate }}</h3>
 }
 
-<mat-grid-list cols="1" rowHeight="300px">
+<mat-grid-list cols="2" rowHeight="300px">
     @for (challenge of challenges; track challenge) {
         <mat-grid-tile>
             <app-challenge-card-item [challenge]="challenge"></app-challenge-card-item>

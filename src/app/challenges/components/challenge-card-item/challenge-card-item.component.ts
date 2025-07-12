@@ -7,6 +7,7 @@ import {AuthService} from "../../../iam/services/auth.service";
 import {User} from "../../../iam/model/user.entity";
 import {NgIf} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
     selector: 'app-challenge-card-item',
@@ -18,7 +19,8 @@ import {MatIconModule} from "@angular/material/icon";
         RouterLink,
         MatButton,
         MatCardImage,
-        MatIconModule
+        MatIconModule,
+        TranslatePipe
     ],
     templateUrl: './challenge-card-item.component.html',
     standalone: true,
@@ -37,4 +39,14 @@ export class ChallengeCardItemComponent implements OnInit {
   ngOnInit() {
       this.groupId = this.route.snapshot.params['groupId'];
   }
+
+    public formatDate() {
+        let deadline: Date = new Date(this.challenge.deadline);
+        console.log(deadline);
+
+        const padZero = (num: number): string => num < 10 ? `0${num}` : `${num}`;
+
+        return `${deadline.getDate()}/${deadline.getMonth() + 1}/${deadline.getFullYear()} at ` +
+            `${padZero(deadline.getHours())}:${padZero(deadline.getMinutes())}:${padZero(deadline.getSeconds())}`;
+    }
 }

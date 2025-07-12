@@ -2,12 +2,14 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import {Router} from "@angular/router";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-register',
-  imports: [
-    ReactiveFormsModule,
-  ],
+    imports: [
+        ReactiveFormsModule,
+        TranslatePipe,
+    ],
   templateUrl: './register.component.html',
   standalone: true,
   styleUrls: ['./register.component.css']
@@ -45,7 +47,13 @@ export class RegisterComponent {
         break;
     }
 
-    this.auth.register(this.form.value).subscribe({
+    this.auth.register({
+      email: this.form.value.email,
+      password: this.form.value.password,
+      firstName: this.form.value.firstName,
+      lastName: this.form.value.lastName,
+      roles: [this.form.value.role]
+    }).subscribe({
       next: (user) => {
         alert('Registrado con éxito');
         this.form.reset({ role: 'student' });
@@ -53,7 +61,9 @@ export class RegisterComponent {
       },
       error: (err) => {
         console.log(err);
-        this.error = err.message
+        if (err.status === 401) {
+          this.error = "Este email ya está en uso"
+        }
       }
     });
 

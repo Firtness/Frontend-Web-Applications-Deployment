@@ -1,21 +1,21 @@
-<h2 mat-dialog-title class="dialog-title">🐝 Crear un Nuevo Grupo</h2>
+<h2 mat-dialog-title class="dialog-title">🐝 {{ 'createNewGroup' | translate }}</h2>
 
 <mat-dialog-content class="group-dialog">
     <form (ngSubmit)="onSubmit()" #groupForm="ngForm" class="group-form">
 
         <mat-form-field appearance="outline" class="full-width">
-            <mat-label>🐝 Nombre del Grupo</mat-label>
+            <mat-label>🐝 {{ 'groupName' | translate }}</mat-label>
             <input matInput [(ngModel)]="groupData.name" name="name" required>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
-            <mat-label>📝 Descripción</mat-label>
+            <mat-label>📝 {{ 'description' | translate }}</mat-label>
             <textarea matInput [(ngModel)]="groupData.description" name="description" rows="3" required></textarea>
         </mat-form-field>
 
         <button mat-raised-button color="accent" class="submit-button" type="submit"
                 [disabled]="groupForm.invalid">
-            🐝 Crear Grupo
+            🐝 {{ 'createGroup' | translate }}
         </button>
     </form>
 </mat-dialog-content>

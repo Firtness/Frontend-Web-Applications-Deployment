@@ -1,8 +1,9 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {BaseService} from "../../shared/services/base.service";
 import {Group} from "../model/group.entity";
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
+import {AuthService} from "../../iam/services/auth.service";
 
 const groupsResourceEndpoint = environment.groupsEndpointPath;
 
@@ -20,12 +21,16 @@ export class GroupService extends BaseService<Group> {
     return this.http.get<Group[]>(`${this.resourcePath()}/user/${userId}`, this.httpOptions);
   }
 
-  public createGroupAsTeacher(userId: number, group: Group): Observable<Group> {
-    return this.http.post<Group>(`${this.resourcePath()}/teacher/${userId}`, JSON.stringify(group), this.httpOptions);
+  public createGroupAsTeacher(group: Group): Observable<Group> {
+    return this.http.post<Group>(`${this.resourcePath()}`, JSON.stringify(group), this.httpOptions);
   }
 
   public getGroupsByUserId(userId: number): Observable<Group[]> {
     return this.http.get<Group[]>(`${this.resourcePath()}/user/${userId}`, this.httpOptions);
+  }
+
+  public kickStudentFromGroup(studentId: number, groupId: number): Observable<void> {
+    return this.http.delete<void>(`${this.resourcePath()}/${groupId}/students/${studentId}`, this.httpOptions);
   }
 
   

@@ -1,0 +1,56 @@
+<div style="max-width: 600px; margin: 40px auto; text-align: center;">
+    <h2>Estado de Submissions</h2>
+
+    <!-- Gráfico de Doughnut -->
+    <canvas baseChart
+            [data]="pieChartData"
+            [options]="pieChartOptions"
+            [type]="pieChartType">
+    </canvas>
+
+    <div class="stats" style="display: flex; justify-content: center; margin-top: 30px;">
+        <div class="stat-item" style="display: flex; align-items: center; margin: 0 20px; color: #c62828;">
+            <mat-icon class="icon" style="color: #c62828; margin-right: 5px;">functions</mat-icon>
+            <span>Promedio:</span>
+            <strong style="margin-left: 5px;">{{ calculateAverage() | number:'1.1-1' }}</strong>
+        </div>
+        <div class="stat-item" style="display: flex; align-items: center; margin: 0 20px; color: #c62828;">
+            <mat-icon class="icon" style="color: #c62828; margin-right: 5px;">assignment</mat-icon>
+            <span>Total Submissions:</span>
+            <strong style="margin-left: 5px;">{{ submissions.length }}</strong>
+        </div>
+    </div>
+
+    <!-- Detalle de Submissions -->
+    <div class="submissions-list" style="margin-top: 40px;">
+        <h3><mat-icon class="icon">list</mat-icon> Detalle de Submissions</h3>
+        <table *ngIf="submissions.length > 0; else noData">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Estado</th>
+                <th>Nota</th>
+                <th>Contenido</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let sub of submissions; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ sub.status }}</td>
+                <td>{{ sub.score }}</td>
+                <td>{{ sub.content | slice:0:30 }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <ng-template #noData>
+            <p>No se encontraron submissions para este grupo.</p>
+        </ng-template>
+    </div>
+
+    <!-- Botón de volver -->
+    <div class="back-wrapper" style="margin-top: 20px;">
+        <button class="back-button" [routerLink]="['/group', groupId, 'members']">
+            <mat-icon>arrow_back</mat-icon> Volver a miembros
+        </button>
+    </div>
+</div>

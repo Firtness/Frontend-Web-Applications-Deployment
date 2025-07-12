@@ -1,21 +1,29 @@
 <div class="fadeIn">
-    <h2>Sign Up</h2>
+    <h2>{{ 'signUp' | translate }}</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-        <input formControlName="email" type="email" placeholder="Email" /><br>
+        <input formControlName="email" type="email" [placeholder]="'email' | translate" />
 
-        <input formControlName="firstName" type="text" placeholder="First Name" /><br>
+        @if (error != "") {
+            <span class="error-message">{{ error }}</span>
+        } @else {
+            <br>
+        }
 
-        <input formControlName="lastName" type="text" placeholder="Last Name" /><br>
+        <input formControlName="firstName" type="text" [placeholder]="'firstName' | translate" /><br>
+
+        <input formControlName="lastName" type="text" [placeholder]="'lastName' | translate" /><br>
 
         <select formControlName="role" title="Role">
-            <option value="student">Student</option>
+            <option value="student">{{ 'student' | translate }}</option>
             <option value="teacher">Teacher</option>
         </select> <br>
 
-        <input formControlName="password" type="password" placeholder="Password" />
+        <input formControlName="password" type="password" [placeholder]="'password' | translate" />
 
-        <p (click)="switchToLogin()">Already have an account? Log In</p>
-        <button type="submit">Continue</button>
+        <p class="clickable" (click)="switchToLogin()">
+            {{ 'loginPrompt' | translate }} {{ 'logIn' | translate }}
+        </p>
+        <button type="submit">{{ 'continue' | translate }}</button>
     </form>
 </div>

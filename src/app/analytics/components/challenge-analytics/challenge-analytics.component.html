@@ -1,0 +1,60 @@
+<div style="height: 90px"></div>
+<div class="analytics-container">
+    <div class="analytics-header">
+        <mat-icon class="icon">bar_chart</mat-icon>
+        <h2>Analíticas de Challenges por Deadline</h2>
+    </div>
+    <div *ngIf="isLoading" class="loading">
+        <mat-spinner></mat-spinner>
+        <p>Cargando datos...</p>
+    </div>
+    <div *ngIf="!isLoading">
+        <div class="chart-section">
+            <div class="chart-container">
+                <canvas baseChart
+                        [data]="mixedChartData"
+                        [options]="mixedChartOptions"
+                        [type]="mixedChartType">
+                </canvas>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <mat-icon class="icon">assignment</mat-icon>
+                    <span>Total challenges</span>
+                    <strong>{{ getTotalChallenges() }}</strong>
+                </div>
+                <div class="stat-item">
+                    <mat-icon class="icon">check_circle</mat-icon>
+                    <span>Challenges con submissions</span>
+                    <strong>{{ getTotalChallengesWithSubmissions() }}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-table submissions-list">
+            <h3><mat-icon class="icon">list</mat-icon> Detalle de Challenges</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Título</th>
+                    <th>Deadline</th>
+                    <th>Submissions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let ch of challenges; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ ch.title }}</td>
+                    <td>{{ ch.deadline | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ getSubmissionsCount(ch.id) }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <button class="back-button" [routerLink]="['/group', groupId, 'members']">
+            <mat-icon>arrow_back</mat-icon> Volver a miembros
+        </button>
+    </div>
+</div>

@@ -1,50 +1,56 @@
 <div style="height: 90px"></div>
 <div class="group-details-container">
     @if (isLoading) {
-        <p>Loading group details...</p>
+        <p>{{ 'loadingGroupDetails' | translate }}</p>
     } @else {
         <mat-card>
 
             <!-- Imagen y detalles del challenge -->
             <div class="challenge-header">
-                <img src="{{ challenge.imageUrl }}" alt="Challenge image">
+                <img src="{{ challenge.imageUrl }}" alt="Challenge image" />
                 <div class="challenge-text">
                     <mat-card-title class="challenge-title">{{ challenge.title }}</mat-card-title>
-                    <mat-card-subtitle class="challenge-subtitle">Group Details</mat-card-subtitle>
+                    <mat-card-subtitle class="challenge-subtitle">{{ 'groupDetails' | translate }}</mat-card-subtitle>
 
                     <div class="challenge-meta">
                         <p class="challenge-description">{{ challenge.description }}</p>
-                        <p class="challenge-deadline">📅 <strong>Deadline:</strong> {{ challenge.deadline }}</p>
+
+                        <p class="challenge-deadline">📅 <strong>{{ 'deadline' | translate }}:</strong> {{ formatDate() }}</p>
+
                     </div>
                 </div>
             </div>
 
             <mat-card-content>
-
                 <!-- Añadir lista de submissions aquí -->
                 <app-submission-card-list [currentChallengeId]="challenge.id"></app-submission-card-list>
-
             </mat-card-content>
 
-
-            <div *ngIf="tempUser.role === 'ROLE_STUDENT'" class="submission-container">
+            <div *ngIf="tempUser.roles[0] === 'ROLE_STUDENT'" class="submission-container">
                 <!--<button mat-raised-button color="primary" (click)="resetAttempts()">Reiniciar intentos</button>-->
-                <button mat-raised-button color="accent" (click)="toggleSubmissionForm()" [disabled]="remainingAttempts === 0">Create Submission</button>
-                <p>remaining Attempts: {{ remainingAttempts }}</p>
-                <p *ngIf="remainingAttempts === 0">You dont have remaining attempts for this challenge</p>
+                <button mat-raised-button color="accent" (click)="toggleSubmissionForm()" [disabled]="remainingAttempts === 0">
+                    {{ 'createSubmission' | translate }}
+                </button>
+                <p>{{ 'remainingAttempts' | translate }}: {{ remainingAttempts }}</p>
+                <p *ngIf="remainingAttempts === 0">{{ 'noRemainingAttempts' | translate }}</p>
                 <div *ngIf="isSubmissionFormVisible" class="submission-form-container">
                     <form (ngSubmit)="createSubmission()">
                         <mat-form-field>
-                            <textarea matInput [(ngModel)]="challengeToSubmit.content" name="description" placeholder="Colocar aqui su resolucion." required></textarea>
+
+
+                            <textarea matInput [(ngModel)]="submissionToSubmit.content" name="description" placeholder="{{ 'submissionPlaceholder' | translate }}" required></textarea>
+
                         </mat-form-field>
-                        <button mat-raised-button color="primary" type="submit">Enviar</button>
-                        <button mat-raised-button color="warn" type="button" (click)="toggleSubmissionForm()">Cancelar</button>
+                        <button mat-raised-button color="primary" type="submit">{{ 'send' | translate }}</button>
+                        <button mat-raised-button color="warn" type="button" (click)="toggleSubmissionForm()">{{ 'cancel' | translate }}</button>
                     </form>
                 </div>
             </div>
 
             <mat-card-actions>
-                <button mat-raised-button color="primary" routerLink="/dashboard">Back to Groups</button>
+                <button mat-raised-button color="primary" routerLink="/group/{{groupId}}">
+                    {{ 'backToGroup' | translate }}
+                </button>
             </mat-card-actions>
 
         </mat-card>

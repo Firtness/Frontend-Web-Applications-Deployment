@@ -8,9 +8,9 @@ import {AuthService} from "../../../iam/services/auth.service";
 import {MatIcon} from "@angular/material/icon";
 
 @Component({
-  selector: 'app-main-layout',
-  imports: [
-    LanguageSwitcherComponent,
+    selector: 'app-main-layout',
+    imports: [
+        LanguageSwitcherComponent,
         MatAnchor,
         MatIconButton,
         MatSidenav,
@@ -21,9 +21,10 @@ import {MatIcon} from "@angular/material/icon";
         RouterLinkActive,
         RouterOutlet,
         MatIcon
-  ],
-  templateUrl: './main-layout.component.html',
-  styleUrl: './main-layout.component.css'
+    ],
+    templateUrl: './main-layout.component.html',
+    standalone: true,
+    styleUrl: './main-layout.component.css'
 })
 export class MainLayoutComponent {
 

@@ -13,6 +13,13 @@ import { ProfileInGroup } from "../../../iam/model/profile-in-group.entity";
 import { RouterLink } from "@angular/router";
 import { MatIcon } from "@angular/material/icon";
 
+import {TranslatePipe} from "@ngx-translate/core";
+
+import {AuthService} from "../../../iam/services/auth.service";
+import {SubmissionApiService} from "../../../challenges/services/submission-api.service";
+import {User} from "../../../iam/model/user.entity";
+
+
 @Component({
     selector: 'app-group-item',
     imports: [
@@ -25,7 +32,8 @@ import { MatIcon } from "@angular/material/icon";
         RouterLink,
         MatCardImage,
         MatIcon,
-        MatIconButton
+        MatIconButton,
+        TranslatePipe
     ],
     templateUrl: './group-item.component.html',
     standalone: true,
@@ -35,15 +43,38 @@ export class GroupItemComponent implements OnInit {
     @Input() group: Group = new Group({});
     @Input() groupProfile: ProfileInGroup = new ProfileInGroup({});
 
-    randomDuration: string = '';
+    user: User | null = new User({})
+    userScore: number = 0;
+
+    constructor(
+        private authService: AuthService,
+        private submissionService: SubmissionApiService
+    ) {}
+
 
     ngOnInit(): void {
-        this.randomDuration = this.generateRandomDuration();
+        this.user = this.authService.getUser();
+
+        if (this.user) {
+            this.getUserScore(this.user).then(r => {this.userScore = r})
+        }
     }
 
-    private generateRandomDuration(): string {
-        const hours = Math.floor(Math.random() * 4) + 1; // 1 to 4 hours
-        const minutes = Math.floor(Math.random() * 60);  // 0 to 59 minutes
-        return `${hours} hour${hours > 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+    async getUserScore(user: User): Promise<number> {
+        try {
+            const submissions = await this.submissionService
+                .getSubmissionsByStudentIdAndGroupId(user.id, this.group.id)
+                .toPromise();
+
+            if (!submissions) {
+                return 0;
+            }
+
+            return submissions.reduce((total, submission) => total + (submission.score || 0), 0);
+        } catch (error) {
+            console.error('Error fetching submissions:', error);
+            return 0;
+        }
     }
+
 }
